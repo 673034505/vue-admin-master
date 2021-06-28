@@ -1,6 +1,7 @@
 <template>
   <el-main>
     <!-- 搜索 -->
+    领用管理
     <el-form :inline="true" :model="listQuery">
       <el-form-item>
         <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />

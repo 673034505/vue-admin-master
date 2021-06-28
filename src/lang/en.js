@@ -13,6 +13,24 @@ export default {
   },
   route: {
     UserAdmin: '账号管理',
+    warehoseManag: '入库管理',
+    materialPurchase: '物资采购',
+    materialStorage: '物资入库',
+    revert: '归还',
+
+    deliveryManage: '出库管理',
+    collectManage: '领用管理',
+    ScrapManage: '报废管理',
+
+    basicData: '基础数据',
+    personManage: '人员管理',
+    supplierManage: '供应商管理',
+
+    statisticsForm: '统计报表',
+    inventoryInfo: '库存信息',
+    capitalFlowInfo: '资产流动信息',
+    ManageAttrition: '管理药品耗损率',
+
     Purchase: 'purchase',
     Supplier: 'supplier',
     User: '用户管理',

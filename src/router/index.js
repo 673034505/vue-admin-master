@@ -58,7 +58,7 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'dashboard' }
       }
     ]
-  },
+  }
 
   // 表情包
   // {
@@ -105,7 +105,7 @@ export const constantRouterMap = [
   //       meta: { title: 'AliIcons', icon: 'AliIcons' }
   //     }
   //   ]
-  // },
+  // }
   // // 表单
   // {
   //   path: '/form',
@@ -168,19 +168,19 @@ export const constantRouterMap = [
   //     }
   //   ]
   // },
-  {
-    path: '/i18n-demo',
-    component: Layout,
-    redirect: 'i18n-demo',
-    children: [
-      {
-        path: 'indexLang',
-        name: 'indexLang',
-        component: () => import('@/views/i18n-demo/indexLang'),
-        meta: { title: 'i18n', icon: 'international' }
-      }
-    ]
-  }
+  // {
+  //   path: '/i18n-demo',
+  //   component: Layout,
+  //   redirect: 'i18n-demo',
+  //   children: [
+  //     {
+  //       path: 'indexLang',
+  //       name: 'indexLang',
+  //       component: () => import('@/views/i18n-demo/indexLang'),
+  //       meta: { title: 'i18n', icon: 'international' }
+  //     }
+  //   ]
+  // }
 ]
 
 export default new Router({
@@ -189,6 +189,156 @@ export default new Router({
   routes: constantRouterMap
 })
 export const asyncRouterMap = [
+  // 入库管理
+  {
+    path: '/warehoseManag',
+    component: Layout,
+    redirect: '/warehoseManag/materialPurchase',
+    name: 'warehoseManag',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'warehoseManag',
+      icon: 'warehoseManag',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'materialPurchase',
+        component: () => import('@/views/warehoseManag/materialPurchase/materialPurchase'),
+        name: 'materialPurchase',
+        meta: {
+          title: 'materialPurchase',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'materialStorage',
+        component: () => import('@/views/warehoseManag/materialStorage/materialStorage'),
+        name: 'materialStorage',
+        meta: {
+          title: 'materialStorage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'revert',
+        component: () => import('@/views/warehoseManag/revert/revert'),
+        name: 'revert',
+        meta: {
+          title: 'revert',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  // 出库管理
+  {
+    path: '/deliveryManage',
+    component: Layout,
+    redirect: '/deliveryManage/collectManage',
+    name: 'deliveryManage',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'deliveryManage',
+      icon: 'deliveryManage',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'collectManage',
+        component: () => import('@/views/deliveryManage/collectManage/collectManage'),
+        name: 'collectManage',
+        meta: {
+          title: 'collectManage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'ScrapManage',
+        component: () => import('@/views/deliveryManage/ScrapManage/ScrapManage'),
+        name: 'ScrapManage',
+        meta: {
+          title: 'ScrapManage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  // 基础数据
+  {
+    path: '/basicData',
+    component: Layout,
+    redirect: '/basicData/personManage',
+    name: 'basicData',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'basicData',
+      icon: 'deliveryManage',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'personManage',
+        component: () => import('@/views/basicData/personManage/personManage'),
+        name: 'personManage',
+        meta: {
+          title: 'personManage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'supplierManage',
+        component: () => import('@/views/basicData/supplierManage/supplierManage'),
+        name: 'supplierManage',
+        meta: {
+          title: 'supplierManage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  // 统计报表
+  {
+    path: '/statisticsForm',
+    component: Layout,
+    redirect: '/statisticsForm/inventoryInfo',
+    name: 'statisticsForm',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'statisticsForm',
+      icon: 'deliveryManage',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'inventoryInfo',
+        component: () => import('@/views/statisticsForm/inventoryInfo/inventoryInfo'),
+        name: 'inventoryInfo',
+        meta: {
+          title: 'inventoryInfo',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'capitalFlowInfo',
+        component: () => import('@/views/statisticsForm/capitalFlowInfo/capitalFlowInfo'),
+        name: 'capitalFlowInfo',
+        meta: {
+          title: 'capitalFlowInfo',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'ManageAttrition',
+        component: () => import('@/views/statisticsForm/ManageAttrition/ManageAttrition'),
+        name: 'ManageAttrition',
+        meta: {
+          title: 'ManageAttrition',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
   {
     path: '/user',
     component: Layout,
@@ -221,29 +371,29 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/purchase',
-    component: Layout,
-    redirect: '/purchase/supplier',
-    name: 'purchase',
-    alwaysShow: true, // will always show the root menu
-    meta: {
-      title: 'Purchase',
-      icon: 'user',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'supplier',
-        component: () => import('@/views/purchase/supplier'),
-        name: 'supplier',
-        meta: {
-          title: 'Supplier',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/purchase',
+  //   component: Layout,
+  //   redirect: '/purchase/supplier',
+  //   name: 'purchase',
+  //   alwaysShow: true, // will always show the root menu
+  //   meta: {
+  //     title: 'Purchase',
+  //     icon: 'user',
+  //     roles: ['admin', 'editor'] // you can set roles in root nav
+  //   },
+  //   children: [
+  //     {
+  //       path: 'supplier',
+  //       component: () => import('@/views/purchase/supplier'),
+  //       name: 'supplier',
+  //       meta: {
+  //         title: 'Supplier',
+  //         roles: ['admin'] // or you can only set roles in sub nav
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/permission',
     component: Layout,
