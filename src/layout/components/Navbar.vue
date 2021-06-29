@@ -18,7 +18,7 @@
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
-          <img class="user-avatar" src="https://mgbq.github.io/nx-admin-site/home.png">
+          <img class="user-avatar" src="@/assets/f778738c-e4f8-4870-b634-56703b4acafe.gif">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
