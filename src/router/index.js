@@ -185,26 +185,28 @@ export const constantRouterMap = [
 
 export default new Router({
   mode: 'history', // 后端支持可开
+  base: 'hust',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
 export const asyncRouterMap = [
   // 入库管理
   {
-    path: '/warehoseManag',
+    path: '/instrument',
     component: Layout,
-    redirect: '/warehoseManag/materialPurchase',
-    name: 'warehoseManag',
+    redirect: '/instrument/materialPurchase',
+    name: 'instrument',
     alwaysShow: true, // will always show the root menu
     meta: {
-      title: 'warehoseManag',
+      title: 'instrument',
       icon: 'warehoseManag',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [
       {
         path: 'materialPurchase',
-        component: () => import('@/views/warehoseManag/materialPurchase/materialPurchase'),
+        // component: () => import('@/views/instrument/materialPurchase/materialPurchase'),
+        component: () => import('@/views/errorPage/407'),
         name: 'materialPurchase',
         meta: {
           title: 'materialPurchase',
@@ -213,7 +215,8 @@ export const asyncRouterMap = [
       },
       {
         path: 'materialStorage',
-        component: () => import('@/views/warehoseManag/materialStorage/materialStorage'),
+        // component: () => import('@/views/instrument/materialStorage/materialStorage'),
+        component: () => import('@/views/errorPage/407'),
         name: 'materialStorage',
         meta: {
           title: 'materialStorage',
@@ -222,43 +225,191 @@ export const asyncRouterMap = [
       },
       {
         path: 'revert',
-        component: () => import('@/views/warehoseManag/revert/revert'),
+        // component: () => import('@/views/instrument/revert/revert'),
+        component: () => import('@/views/errorPage/407'),
         name: 'revert',
         meta: {
           title: 'revert',
           roles: ['admin'] // or you can only set roles in sub nav
         }
-      }
-    ]
-  },
-  // 出库管理
-  {
-    path: '/deliveryManage',
-    component: Layout,
-    redirect: '/deliveryManage/collectManage',
-    name: 'deliveryManage',
-    alwaysShow: true, // will always show the root menu
-    meta: {
-      title: 'deliveryManage',
-      icon: 'deliveryManage',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
+      },
       {
-        path: 'collectManage',
-        component: () => import('@/views/deliveryManage/collectManage/collectManage'),
-        name: 'collectManage',
+        path: 'scrap',
+        // component: () => import('@/views/instrument/scrap/scrap'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'scrap',
         meta: {
-          title: 'collectManage',
+          title: 'scrap',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
       {
-        path: 'ScrapManage',
-        component: () => import('@/views/deliveryManage/ScrapManage/ScrapManage'),
-        name: 'ScrapManage',
+        path: 'inventoryInfo',
+        // component: () => import('@/views/instrument/inventoryInfo/inventoryInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'inventoryInfo',
         meta: {
-          title: 'ScrapManage',
+          title: 'inventoryInfo',
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'capitalFlowInfo',
+        // component: () => import('@/views/instrument/capitalFlowInfo/capitalFlowInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'capitalFlowInfo',
+        meta: {
+          title: 'capitalFlowInfo',
+          roles: ['admin']
+        }
+      }
+    ]
+  },
+  // 试剂药品
+  {
+    path: '/reagentDrugs',
+    component: Layout,
+    redirect: '/reagentDrugs/materialPurchase',
+    name: 'reagentDrugs',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'reagentDrugs',
+      icon: 'warehoseManag',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'materialPurchase',
+        // component: () => import('@/views/reagentDrugs/materialPurchase/materialPurchase'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'materialPurchase',
+        meta: {
+          title: 'materialPurchase',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'materialStorage',
+        // component: () => import('@/views/reagentDrugs/materialStorage/materialStorage'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'materialStorage',
+        meta: {
+          title: 'materialStorage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'revert',
+        // component: () => import('@/views/reagentDrugs/revert/revert'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'revert',
+        meta: {
+          title: 'revert',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'scrap',
+        // component: () => import('@/views/reagentDrugs/scrap/scrap'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'scrap',
+        meta: {
+          title: 'scrap',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'inventoryInfo',
+        // component: () => import('@/views/reagentDrugs/inventoryInfo/inventoryInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'inventoryInfo',
+        meta: {
+          title: 'inventoryInfo',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'capitalFlowInfo',
+        // component: () => import('@/views/reagentDrugs/capitalFlowInfo/capitalFlowInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'capitalFlowInfo',
+        meta: {
+          title: 'capitalFlowInfo',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  // 工具耗材
+  {
+    path: '/toolMaterials',
+    component: Layout,
+    redirect: '/toolMaterials/materialPurchase',
+    name: 'toolMaterials',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'toolMaterials',
+      icon: 'warehoseManag',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'materialPurchase',
+        // component: () => import('@/views/toolMaterials/materialPurchase/materialPurchase'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'materialPurchase',
+        meta: {
+          title: 'materialPurchase',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'materialStorage',
+        // component: () => import('@/views/toolMaterials/materialStorage/materialStorage'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'materialStorage',
+        meta: {
+          title: 'materialStorage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'revert',
+        // component: () => import('@/views/toolMaterials/revert/revert'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'revert',
+        meta: {
+          title: 'revert',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'scrap',
+        // component: () => import('@/views/toolMaterials/scrap/scrap'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'scrap',
+        meta: {
+          title: 'scrap',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'inventoryInfo',
+        // component: () => import('@/views/toolMaterials/inventoryInfo/inventoryInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'inventoryInfo',
+        meta: {
+          title: 'inventoryInfo',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'capitalFlowInfo',
+        // component: () => import('@/views/toolMaterials/capitalFlowInfo/capitalFlowInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'capitalFlowInfo',
+        meta: {
+          title: 'capitalFlowInfo',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }
@@ -280,6 +431,7 @@ export const asyncRouterMap = [
       {
         path: 'personManage',
         component: () => import('@/views/basicData/personManage/personManage'),
+        // component: () => import('@/views/errorPage/407'),
         name: 'personManage',
         meta: {
           title: 'personManage',
@@ -288,7 +440,8 @@ export const asyncRouterMap = [
       },
       {
         path: 'supplierManage',
-        component: () => import('@/views/basicData/supplierManage/supplierManage'),
+        // component: () => import('@/views/basicData/supplierManage/supplierManage'),
+        component: () => import('@/views/errorPage/407'),
         name: 'supplierManage',
         meta: {
           title: 'supplierManage',
@@ -303,7 +456,6 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/statisticsForm/inventoryInfo',
     name: 'statisticsForm',
-    alwaysShow: true, // will always show the root menu
     meta: {
       title: 'statisticsForm',
       icon: 'deliveryManage',
@@ -311,32 +463,34 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: 'inventoryInfo',
-        component: () => import('@/views/statisticsForm/inventoryInfo/inventoryInfo'),
-        name: 'inventoryInfo',
+        path: 'statisticsForm',
+        // component: () => import('@/views/statisticsForm/inventoryInfo/inventoryInfo'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'statisticsForm',
         meta: {
           title: 'inventoryInfo',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'capitalFlowInfo',
-        component: () => import('@/views/statisticsForm/capitalFlowInfo/capitalFlowInfo'),
-        name: 'capitalFlowInfo',
-        meta: {
-          title: 'capitalFlowInfo',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'ManageAttrition',
-        component: () => import('@/views/statisticsForm/ManageAttrition/ManageAttrition'),
-        name: 'ManageAttrition',
-        meta: {
-          title: 'ManageAttrition',
+          icon: 'deliveryManage',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }
+      // {
+      //   path: 'capitalFlowInfo',
+      //   component: () => import('@/views/statisticsForm/capitalFlowInfo/capitalFlowInfo'),
+      //   name: 'capitalFlowInfo',
+      //   meta: {
+      //     title: 'capitalFlowInfo',
+      //     roles: ['admin'] // or you can only set roles in sub nav
+      //   }
+      // },
+      // {
+      //   path: 'ManageAttrition',
+      //   component: () => import('@/views/statisticsForm/ManageAttrition/ManageAttrition'),
+      //   name: 'ManageAttrition',
+      //   meta: {
+      //     title: 'ManageAttrition',
+      //     roles: ['admin'] // or you can only set roles in sub nav
+      //   }
+      // }
     ]
   },
   {
@@ -351,21 +505,32 @@ export const asyncRouterMap = [
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [
+      // {
+      //   path: 'user',
+      //   component: () => import('@/views/system/user/user'),
+      //   name: 'user',
+      //   meta: {
+      //     title: 'User',
+      //     roles: ['admin'] // or you can only set roles in sub nav
+      //   }
+      // },
       {
-        path: 'user',
-        component: () => import('@/views/system/user/user'),
-        name: 'user',
+        path: 'role',
+        // component: () => import('@/views/system/user/role'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'role',
         meta: {
-          title: 'User',
+          title: 'Role',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
       {
-        path: 'role',
-        component: () => import('@/views/system/user/role'),
-        name: 'role',
+        path: 'dictiona',
+        // component: () => import('@/views/system/dictiona/dictiona'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'dictiona',
         meta: {
-          title: 'Role',
+          title: 'dictiona',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }
@@ -394,33 +559,33 @@ export const asyncRouterMap = [
   //     }
   //   ]
   // },
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    name: 'permission',
-    alwaysShow: true, // will always show the root menu
-    meta: {
-      title: 'permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [{
-      path: 'page',
-      component: () => import('@/views/permission/page'),
-      name: 'pagePermission',
-      meta: {
-        title: 'pagePermission',
-        roles: ['admin'] // or you can only set roles in sub nav
-      }
-    }, {
-      path: 'directive',
-      component: () => import('@/views/permission/directive'),
-      name: 'directivePermission',
-      meta: {
-        title: 'directivePermission'
-        // if do not set roles, means: this page does not require permission
-      }
-    }]
-  },
+  // {
+  //   path: '/permission',
+  //   component: Layout,
+  //   redirect: '/permission/page',
+  //   name: 'permission',
+  //   alwaysShow: true, // will always show the root menu
+  //   meta: {
+  //     title: 'permission',
+  //     icon: 'lock',
+  //     roles: ['admin', 'editor'] // you can set roles in root nav
+  //   },
+  //   children: [{
+  //     path: 'page',
+  //     component: () => import('@/views/permission/page'),
+  //     name: 'pagePermission',
+  //     meta: {
+  //       title: 'pagePermission',
+  //       roles: ['admin'] // or you can only set roles in sub nav
+  //     }
+  //   }, {
+  //     path: 'directive',
+  //     component: () => import('@/views/permission/directive'),
+  //     name: 'directivePermission',
+  //     meta: {
+  //       title: 'directivePermission'
+  //       // if do not set roles, means: this page does not require permission
+  //     }
+  //   }]
+  // },
   { path: '*', redirect: '/404', hidden: true }]

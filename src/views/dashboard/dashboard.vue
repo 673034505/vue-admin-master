@@ -57,4 +57,24 @@ export default {
       padding: 8px;
     }
   }
+
+  .bg-white {
+      --tw-bg-opacity: 1;
+      background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+  }
+  .py-48 {
+    padding-top: 12rem/* 192px */;
+    padding-bottom: 12rem/* 192px */;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .text-2xl {
+      font-size: 1.5rem/* 24px */;
+      line-height: 2rem/* 32px */;
+  }
+  .text-green-500 {
+      --tw-text-opacity: 1;
+      color: rgba(16, 185, 129, var(--tw-text-opacity));
+  }
 </style>

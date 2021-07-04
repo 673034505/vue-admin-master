@@ -1,27 +1,21 @@
 import request from '@/utils/request'
 
-// export function login(data) {
-//   return request({
-//     url: '/api/Auth/Login',
-//     method: 'post',
-//     data
-//   })
-// }
+export function login(data) {
+  return request({
+    url: '/api/Auth/Login',
+    method: 'post',
+    data
+  })
+}
 export function getCodes(username, password) {
   return request({
     url: '/api/Auth/Code',
     method: 'get'
   })
 }
-
-export function login(username, password) {
+export function GetUserInfo() {
   return request({
-    url: '/user/login',
-    method: 'post',
-    data: {
-      username,
-      password
-    }
+    url: '/api/Auth/GetUserInfo'
   })
 }
 
@@ -35,7 +29,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/api/Auth/LogOut',
+    method: 'get'
   })
 }

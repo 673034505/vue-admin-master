@@ -15,6 +15,7 @@ export default {
 
 </script>
 <style>
+/* @import './assets/style/tailwind.scss'; */
   .app .app-router-view {
     position: absolute;
     top: 0;

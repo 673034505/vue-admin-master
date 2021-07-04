@@ -64,8 +64,19 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+      // this.$store.dispatch('LogOut').then(() => {
+      //   location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+      // })
+      this.$confirm('是否退出系统, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('LogOut').then(() => {
+          this.$router.push({ path: '/login' })
+        })
+      }).catch(() => {
+        return false
       })
     }
   }

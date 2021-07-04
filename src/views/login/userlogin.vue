@@ -1,12 +1,12 @@
 <template>
   <el-form ref="loginForm" class="login-form" status-icon :rules="loginRules" :model="loginForm" label-width="0">
-    <el-form-item prop="username">
-      <el-input v-model="loginForm.username" size="small" auto-complete="off" placeholder="请输入用户名" @keyup.enter.native="handleLogin">
+    <el-form-item prop="userName">
+      <el-input v-model="loginForm.userName" size="small" auto-complete="off" placeholder="请输入用户名" @keyup.enter.native="handleLogin">
         <i slot="prefix" class="icon-yonghu" />
       </el-input>
     </el-form-item>
-    <el-form-item prop="password">
-      <el-input v-model="loginForm.password" size="small" :type="passwordType" auto-complete="off" placeholder="请输入密码" @keyup.enter.native="handleLogin">
+    <el-form-item prop="passWord">
+      <el-input v-model="loginForm.passWord" size="small" :type="passwordType" auto-complete="off" placeholder="请输入密码" @keyup.enter.native="handleLogin">
         <i slot="suffix" class="el-icon-view el-input__icon" @click="showPassword" />
         <i slot="prefix" class="icon-mima" />
       </el-input>
@@ -42,8 +42,10 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '123456'
+        userName: '9999',
+        passWord: '123456',
+        code: '1111',
+        uuid: '111'
       },
       checked: false,
       code: {
@@ -53,10 +55,11 @@ export default {
         type: 'text'
       },
       loginRules: {
-        username: [
-          { required: true, trigger: 'blur', validator: validateUsername }
+        userName: [
+          // { required: true, trigger: 'blur', validator: validateUsername }
+          { required: true, trigger: 'blur' }
         ],
-        password: [
+        passWord: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, message: '密码长度最少为6位', trigger: 'blur' }
         ],
@@ -66,7 +69,7 @@ export default {
           { required: true, trigger: 'blur', validator: validateCode }
         ]
       },
-      passwordType: 'password'
+      passwordType: 'passWord'
     }
   },
   computed: {
@@ -77,14 +80,19 @@ export default {
   methods: {
     showPassword() {
       this.passwordType === ''
-        ? (this.passwordType = 'password')
+        ? (this.passwordType = 'passWord')
         : (this.passwordType = '')
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch('Login', this.loginForm).then(res => {
-            this.$router.push({ path: '/dashboard/dashboard' })
+          this.$store.dispatch('Login', this.loginForm).then(response => {
+            const { statusCode, data, message } = response
+            if (statusCode === 200) {
+              this.$router.push({ path: '/dashboard/dashboard' })
+            } else {
+              this.$message.error(message)
+            }
           })
         }
       })

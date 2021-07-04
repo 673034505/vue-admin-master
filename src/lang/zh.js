@@ -14,11 +14,17 @@ export default {
     Default: '默认'
   },
   route: {
-    UserAdmin: '账号管理',
+    UserAdmin: '系统管理',
+    instrument: '仪器设备',
     warehoseManag: '入库管理',
-    materialPurchase: '物资采购',
-    materialStorage: '物资入库',
+    materialPurchase: '采购',
+    materialStorage: '入库',
     revert: '归还',
+    scrap: '报废',
+    dictiona: '字典管理',
+
+    reagentDrugs: '试剂药品',
+    toolMaterials: '工具耗材',
 
     deliveryManage: '出库管理',
     collectManage: '领用管理',
