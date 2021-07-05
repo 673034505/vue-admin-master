@@ -416,7 +416,7 @@ export default {
       // this.alertForm = row
       const params = { id: row.userID }
       getUsersInfo(params).then(response => {
-        const { data, statusCode, message } = response
+        const { data, statusCode } = response
         if (statusCode === 200) {
           this.alertForm = data
         }
