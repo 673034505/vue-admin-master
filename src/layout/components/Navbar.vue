@@ -1,6 +1,7 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <nx-hamburger class="hamburger-container" :toggle-click="toggleSideBar" :is-active="true" />
+    <nx-hamburger class="hamburger-container" :toggle-click="toggleSideBar" :is-active="sidebar.opened" />
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
     <nx-breadcrumb class="breadcrumb-container" />
 
@@ -28,7 +29,7 @@
             </el-dropdown-item>
           </router-link> -->
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出</span>
+            <span style="display:block;" @click="logout">退出{{ sidebar.opened }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

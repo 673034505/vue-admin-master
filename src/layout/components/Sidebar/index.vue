@@ -29,7 +29,8 @@ export default {
       'permission_routers'
     ]),
     isCollapse() {
-      return !this.sidebar.opened
+      return true
+      // return !this.sidebar.opened
     }
   }
 }

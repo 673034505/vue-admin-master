@@ -89,19 +89,19 @@ export const constantRouterMap = [
   //     {
   //       path: 'iconIndex',
   //       name: 'iconIndex',
-  //       component: () => import('@/views/icons/svg-icons/iconIndex'),
+  //       component: () => import('@/views/backups/icons/svg-icons/iconIndex'),
   //       meta: { title: 'svgicons', icon: 'icon' }
   //     },
   //     {
   //       path: 'font-awesome',
   //       name: 'font-awesome',
-  //       component: () => import('@/views/icons/font-awesome/'),
+  //       component: () => import('@/views/backups/icons/font-awesome/'),
   //       meta: { title: 'fontawesome', icon: 'font-awesome' }
   //     },
   //     {
   //       path: 'AliIcons',
   //       name: 'AliIcons',
-  //       component: () => import('@/views/icons/AliIcons/'),
+  //       component: () => import('@/views/backups/icons/AliIcons/'),
   //       meta: { title: 'AliIcons', icon: 'AliIcons' }
   //     }
   //   ]
@@ -531,6 +531,16 @@ export const asyncRouterMap = [
         name: 'dictiona',
         meta: {
           title: 'dictiona',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'menus',
+        component: () => import('@/views/system/menus/menus'),
+        // component: () => import('@/views/errorPage/407'),
+        name: 'menus',
+        meta: {
+          title: 'menus',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }

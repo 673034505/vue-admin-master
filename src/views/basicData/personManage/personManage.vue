@@ -228,7 +228,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import local from './local'
+import local from '@/views/local'
 import { isvalidPhone } from '@/utils/validate'
 import { getUsersQuery, getUsersCreate, getUsersInfo, getUsersUpdate, getUsersDelete } from '@/api/api'
 const viewName = 'i18nView'
@@ -435,7 +435,7 @@ export default {
         getUsersDelete({ userIds: [row.userID] }).then(response => {
           const { statusCode, message } = response
           if (statusCode === 200) {
-            this.$message.error('删除成功')
+            this.$message.success('删除成功')
             this.refreshList()
           } else {
             this.$message.error(message)

@@ -104,13 +104,13 @@
       width="800px"
       :close-on-click-modal="false"
       :fullscreen="fullScreen"
-      @closed="handleClose('alertForm')"
+      @closed="handleClose('form')"
     >
       <el-form
-        ref="alertForm"
+        ref="form"
         label-width="110px"
         :size="formSize"
-        :model="alertForm"
+        :model="form"
         class="stripe"
         :hide-required-asterisk="viewMode"
         :show-message="!viewMode"
@@ -124,7 +124,7 @@
               label="姓名"
             >
               <el-input
-                v-model.trim="alertForm.name"
+                v-model.trim="form.name"
                 maxlength="10"
                 placeholder="请输入"
               />
@@ -136,7 +136,7 @@
               label="手机号"
             >
               <el-input
-                v-model.trim="alertForm.phone"
+                v-model.trim="form.phone"
                 placeholder="请输入"
               />
             </el-form-item>
@@ -147,7 +147,7 @@
               label="地址"
             >
               <el-input
-                v-model.trim="alertForm.address"
+                v-model.trim="form.address"
                 maxlength="50"
                 placeholder="请输入"
               />
@@ -163,7 +163,7 @@
               label="受害时间"
             >
               <el-date-picker
-                v-model="alertForm.occurTimeStr"
+                v-model="form.occurTimeStr"
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 style="width: 100%"
@@ -177,7 +177,7 @@
               label="恶意信息值"
             >
               <el-input
-                v-model.trim="alertForm.evilInfo"
+                v-model.trim="form.evilInfo"
                 maxlength="50"
                 name="name"
                 placeholder="请输入"
@@ -190,7 +190,7 @@
               label="备注"
             >
               <el-input
-                v-model="alertForm.remark"
+                v-model="form.remark"
                 type="textarea"
                 :rows="3"
                 maxlength="100"
@@ -206,8 +206,8 @@
 
       <template slot="footer">
         <div class="text-center">
-          <el-button :size="formSize" @click="handleClose('alertForm')">{{ viewMode ? '关 闭' : '取 消' }}</el-button>
-          <el-button v-show="!viewMode" type="primary" :size="formSize" @click="handleSubmitForm('alertForm')">确 定</el-button>
+          <el-button :size="formSize" @click="handleClose('form')">{{ viewMode ? '关 闭' : '取 消' }}</el-button>
+          <el-button v-show="!viewMode" type="primary" :size="formSize" @click="handleSubmitForm('form')">确 定</el-button>
         </div>
       </template>
 
@@ -216,7 +216,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import local from './local'
+import local from '@/views/local'
 const viewName = 'i18nView'
 export default {
   name: 'User',
@@ -256,7 +256,7 @@ export default {
         startTime: '',
         endTime: ''
       },
-      alertForm: {
+      form: {
         name: '',
         phone: '',
         address: '',
@@ -319,7 +319,7 @@ export default {
       this.fullScreen = false
       this.dialogVisible = false
       this.$refs[formName].resetFields()
-      this.alertForm = {
+      this.form = {
         name: '',
         phone: '',
         address: '',

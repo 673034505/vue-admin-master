@@ -1,9 +1,9 @@
 <template>
   <div class="logo">
-    <transition name="fade">
+    <!-- <transition name="fade">
       <span v-if="isCollapse" key="0" class="logo_title is-bold " :class="{'is-text':!type,'is-img':type}">
         <template v-if="type">
-          <img :src="website.logo" width="40" height="40">
+          <img src="../../../assets/images/logo.21bf62ca.png" width="40" height="40">
         </template>
         <template v-else>
           {{ website.logo }}
@@ -13,9 +13,18 @@
     <transition-group name="fade">
       <template v-if="!isCollapse">
         <span key="1" class="logo_title is-bold"> {{ generateSkinTitle('common','title') }} </span>
-        <!-- <span key="2" class="logo_subtitle">111</span> -->
       </template>
-    </transition-group>
+    </transition-group> -->
+    <transition name="sidebarLogoFade">
+      <router-link v-if="isCollapse" key="isCollapse" class="sidebar-logo-link" to="/">
+        <img v-if="logo" src="../../../assets/images/logo.21bf62ca.png" class="sidebar-logo">
+        <span v-if="sidebar.opened" key="1" class="logo_title is-bold"> {{ generateSkinTitle('common','title') }} </span>
+      </router-link>
+      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
+        <img v-if="logo" :src="logo" class="sidebar-logo">
+        <h1 class="sidebar-title">{{ title }} </h1>
+      </router-link>
+    </transition>
   </div>
 </template>
 
@@ -26,13 +35,17 @@ export default {
   name: 'Logo',
   props: ['isCollapse'],
   data() {
-    return {}
+    return {
+      logo: '../../../assets/images/logo.21bf62ca.png',
+      title: '11111'
+    }
   },
   created() {},
   computed: {
-    ...mapGetters(['website']),
+    ...mapGetters(['website', 'sidebar']),
     type: function(val) {
-      return this.website.logo.indexOf('static') !== -1
+      return true
+      // return this.website.logo.indexOf('static') !== -1
     }
   },
   methods: {
@@ -66,7 +79,7 @@ div{
   // width: 230px;
   height: 64px;
   line-height: 64px;
-  background: #1f2d3d;
+  background: rgb(45, 58, 75);
   color: #fdfdfd;
   text-align: center;
   font-size: 20px;
@@ -98,5 +111,11 @@ div{
 .logo_subtitle {
   font-size: 16px;
   padding-top: 5px;
+}
+.sidebar-logo{
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    // margin-right: 6px;
 }
 </style>

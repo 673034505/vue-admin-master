@@ -6,7 +6,7 @@ const app = {
     language: Cookies.get('language') || 'zh',
     sidebar: {
       // opened: !+Cookies.get('sidebarStatus'),
-      opened: 1,
+      opened: true,
       withoutAnimation: false
     },
     device: 'desktop'
@@ -18,8 +18,8 @@ const app = {
       } else {
         Cookies.set('sidebarStatus', 0)
       }
-      // state.sidebar.opened = !state.sidebar.opened
-      // state.sidebar.withoutAnimation = false
+      state.sidebar.opened = !state.sidebar.opened
+      state.sidebar.withoutAnimation = false
     },
     // 中英文
     SET_LANGUAGE: (state, language) => {

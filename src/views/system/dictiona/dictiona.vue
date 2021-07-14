@@ -216,7 +216,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import local from './local'
+import local from '@/views/local'
 const viewName = 'i18nView'
 export default {
   name: 'User',
