@@ -536,7 +536,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'menus',
-        component: () => import('@/views/system/menus/menus'),
+        component: () => import('@/views/system/menus'),
         // component: () => import('@/views/errorPage/407'),
         name: 'menus',
         meta: {
