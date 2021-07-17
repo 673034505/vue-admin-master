@@ -39,6 +39,8 @@ export default {
     capitalFlowInfo: '资产流动信息',
     ManageAttrition: '管理药品耗损率',
 
+    Menus: '菜单管理',
+
     Purchase: '采购',
     Supplier: '供货商信息管理',
     User: '用户管理',

@@ -31,9 +31,11 @@ import store from './store'
 // Internationalization
 import i18n from './lang'
 import { global } from '@/global/global'
+import { download } from '@/utils/request'
 import {
-  loadStyle
-} from './utils/util'
+  loadStyle,
+  resetForm
+} from './utils/utils'
 import {
   iconfontUrl,
   iconfontVersion
@@ -48,6 +50,9 @@ import * as filters from './filters' // global filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+// 全局方法挂载
+Vue.prototype.resetForm = resetForm
+Vue.prototype.download = download
 
 Vue.use(VCharts)
 Vue.use(ElementUI, { size: 'small', locale })

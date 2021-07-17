@@ -6,7 +6,7 @@ import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth' // 验权
 import {
   setTitle
-} from '@/utils/util' // 设置浏览器头部标题
+} from '@/utils/utils' // 设置浏览器头部标题
 
 // permission judge function
 function hasPermission(roles, permissionRoles) {

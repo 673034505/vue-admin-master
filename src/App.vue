@@ -28,4 +28,15 @@ export default {
     transform-style: preserve-3d;
     visibility: visible;
   }
+  .mb8{
+      margin-bottom: 8px;
+  }
+  .text-red-500{
+    --tw-text-opacity: 1;
+    color: rgba(239, 68, 68, var(--tw-text-opacity));
+  }
+  .text-green-500{
+     --tw-text-opacity: 1;
+      color: rgba(16, 185, 129, var(--tw-text-opacity));
+  }
 </style>

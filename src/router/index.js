@@ -540,7 +540,7 @@ export const asyncRouterMap = [
         // component: () => import('@/views/errorPage/407'),
         name: 'menus',
         meta: {
-          title: 'menus',
+          title: 'Menus',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       }

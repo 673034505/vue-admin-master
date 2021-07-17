@@ -6,11 +6,18 @@
         <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.addUser') }}</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleEdit">编辑角色</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit">密码重置</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="">搜索</el-button>
+        <el-button icon="el-icon-refresh" @click="">重置</el-button>
       </el-form-item>
     </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.add') }}</el-button>
+      <!-- <el-button class="filter-item" size="mini" style="margin-left: 10px;" plain type="success" icon="el-icon-edit" @click="handleEdit">修改</el-button> -->
+      <!-- <el-button class="filter-item" size="mini" style="margin-left: 10px;" plain type="danger" icon="el-icon-delete" @click="handleEdit">删除</el-button> -->
+
+      <!-- <el-button class="filter-item" style="margin-left: 10px;" plain type="warning" icon="el-icon-edit">密码重置</el-button> -->
+    </el-row>
 
     <el-row>
       <el-table v-loading="loading" :data="menuList" row-key="id" stripe border :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -62,15 +69,21 @@
 
     <!-- 添加或修改菜单对话框 -->
     <el-dialog :title="formTitle" :visible.sync="open" width="800px" append-to-body :close-on-click-modal="false" @close="cancel">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
-          <el-col :span="24">
+          <el-col :span="12">
+            <el-form-item label="菜单名称" prop="name">
+              <el-input v-model="form.name" maxlength="50" placeholder="请输入菜单名称" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
             <el-form-item label="上级菜单">
-              <!-- <el-tree :data="menuList" :props="menuProps" @node-click="handleNodeClick" /> -->
               <treeselect v-model="form.parentUID" :class="size" :load-options="loadOptions" :options="menuOptions" :normalizer="normalizer" :show-count="true" no-results-text="没有查询到菜单" placeholder="选择上级菜单" />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+
+          <el-col :span="12">
             <el-form-item label="菜单图标">
               <el-popover placement="bottom-start" width="680" trigger="click" @show="$refs['iconSelect'].reset()">
                 <IconSelect ref="iconSelect" @selected="selected" />
@@ -81,21 +94,19 @@
               </el-popover>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="菜单名称" prop="name">
-              <el-input v-model="form.name" maxlength="50" placeholder="请输入菜单名称" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
+
+          <el-col :span="12">
             <el-form-item label="显示排序" prop="sortIndex">
               <el-input-number v-model="form.sortIndex" :max="999" step-strictly controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
+
           <el-col :span="24">
             <el-form-item label="路由地址" prop="path">
               <el-input v-model="form.path" maxlength="50" placeholder="请输入路由地址" />
             </el-form-item>
           </el-col>
+
           <el-col :span="24">
             <el-form-item label="组件路径" prop="component">
               <el-input v-model="form.component" maxlength="255" placeholder="请输入组件路径" />
@@ -250,6 +261,8 @@ export default {
     }
 
     this.getList()
+
+    this.getTreeselect()
   },
 
   methods: {
@@ -394,7 +407,7 @@ export default {
 
     handleAdd() {
       this.open = true
-      this.getTreeselect()
+      this.formTitle = '编辑'
     },
 
     // 删除
