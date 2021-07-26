@@ -13,6 +13,7 @@ import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 
 import 'tailwindcss/tailwind.css' // tailwindcss
+import 'remixicon/fonts/remixicon.css' // remixicon
 import './assets/css/tailwind.css'
 // 右键菜单
 import 'v-contextmenu/dist/index.css'

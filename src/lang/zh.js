@@ -30,8 +30,8 @@ export default {
     collectManage: '领用管理',
     ScrapManage: '报废管理',
 
-    basicData: '基础数据',
-    personManage: '人员管理',
+    basicData: '用户管理',
+    personManage: '用户列表',
     supplierManage: '供应商管理',
 
     statisticsForm: '统计报表',

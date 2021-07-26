@@ -12,6 +12,18 @@
       </el-form-item>
     </el-form>
 
+    <!-- <el-row
+      :gutter="10"
+      class="mb8"
+    >
+      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd"> 领用 </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd"> 借用 </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd"> 预约 </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd"> 报废 </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd"> 归还 </el-button>
+
+    </el-row> -->
+
     <!-- 表格 -->
     <el-table
       ref="elTable"
@@ -20,62 +32,77 @@
       :data="list"
       border
       @row-click="onRowClick"
+      @selection-change="handleSelectionChange"
     >
-      <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
-      <el-table-column
-        prop="id"
-        type="index"
-        label="序号"
-        width="50"
-        align="center"
-      />
-      <el-table-column
-        prop="userName"
-        :label="$t('i18nView.tableName')"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="userID"
-        label="账号"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="phone"
-        label="手机号"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="email"
-        label="邮箱"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="updateTime"
+      <!-- <el-table-column sortable type="selection" width="55" align="center" /> -->
+      <el-table-column prop="id" type="index" label="序号" width="50" align="center" />
+      <el-table-column prop="text" label="设备名称" align="center" show-overflow-tooltip />
+      <el-table-column prop="value" label="设备编码" align="center" show-overflow-tooltip />
+      <el-table-column prop="type" label="设备类型" align="center" show-overflow-tooltip />
+      <el-table-column prop="isvalid" label="设备编码" align="center" show-overflow-tooltip />
+      <el-table-column prop="level" label="设备编码" align="center" show-overflow-tooltip />
+      <el-table-column prop="parent" label="设备编码" align="center" show-overflow-tooltip />
+      <!-- <el-table-column
+        prop="supplytime"
         label="更新时间"
         align="center"
         show-overflow-tooltip
-      />
-      <el-table-column align="center" fixed="right" label="操作" width="280">
+      /> -->
+      <el-table-column align="center" fixed="right" label="设备管理" width="320">
         <template slot-scope="scope">
           <el-button
             :size="formSize"
             type="text"
-            icon="el-icon-search"
+            icon="el-icon-sold-out"
             class="-my-1"
-            @click="handleViewDetail(scope.$index, scope.row)"
+            @click="handlCollect(scope.$index, scope.row)"
           >
-            <span class="text-sm">查看</span>
+            <span class="text-sm">领用</span>
           </el-button>
+          <el-button
+            :size="formSize"
+            type="text"
+            icon="el-icon-sell"
+            class="-my-1"
+            @click="handlReturn(scope.$index, scope.row)"
+          >
+            <span class="text-sm">归还</span>
+          </el-button>
+          <el-button
+            v-if="!scope.row.issuedTime"
+            :size="formSize"
+            type="text"
+            icon="el-icon-s-claim"
+            class="-my-1"
+            @click="handlBorrow(scope.$index, scope.row)"
+          >
+            <span class="text-sm">借用</span>
+          </el-button>
+          <el-button
+            v-if="!scope.row.issuedTime"
+            :size="formSize"
+            type="text"
+            icon="el-icon-document-remove"
+            class="-my-1 "
+            @click="handlReserve(scope.$index, scope.row)"
+          >
+            <span class="text-sm">预约</span>
+          </el-button>
+
+          <el-button
+            :size="formSize"
+            type="text"
+            icon="el-icon-s-release"
+            class="-my-1 text-red-500"
+            @click="handlScrap(scope.$index, scope.row)"
+          >
+            <span class="text-sm">报废</span>
+          </el-button>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" fixed="right" label="操作" width="180">
+        <template slot-scope="scope">
           <el-button
             v-if="!scope.row.issuedTime"
             :size="formSize"
@@ -229,8 +256,8 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
+import { getDevicesubcategory, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
-import { getUsersQuery, getUsersCreate, getUsersInfo, getUsersUpdate, getUsersDelete } from '@/api/api'
 const viewName = 'i18nView'
 // 自定义验证
 const validPhone = (rule, value, callback) => {
@@ -243,7 +270,7 @@ const validPhone = (rule, value, callback) => {
   }
 }
 export default {
-  name: 'PersonManage',
+  name: 'DeviceList',
   components: { Pagination },
   data() {
     return {
@@ -257,6 +284,7 @@ export default {
       listLoading: false,
       list: [],
       selection: [],
+      multipleSelection: [],
 
       // 表单
       formTitle: '',
@@ -338,28 +366,149 @@ export default {
     // 获取列表数据
     getList() {
       this.listLoading = true
-      const { limit, pageNum } = this
-      const params = {
-        pageIndex: pageNum,
-        pageSize: limit,
-        orderBy: 0,
-        sort: '',
-        queryText: ''
-      }
-      getUsersQuery(params).then(response => {
+      const { limit, page } = this
+      //   const params = {
+      //     pageIndex: page,
+      //     pageSize: limit
+      //     // orderBy: 0,
+      //     // sort: ''
+      //     // queryText: ''
+      //   }
+      getDevicesubcategory().then(response => {
         const { data, statusCode, message } = response
         this.listLoading = false
         if (statusCode === 200) {
-          this.list = data.dataSource
-          this.tableTotalCount = data.totalCount
+          this.list = data
         } else {
           this.$message.error(message)
         }
       })
     },
 
+    // 领用仪器
+    handlCollect(index, row) {
+      this.$confirm(`是否领用该仪器`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        dangerouslyUseHTMLString: true,
+        center: true,
+        type: 'warning'
+      }).then(() => {
+        setLYDevice({ id: row.id }).then(response => {
+          const { statusCode } = response
+          if (statusCode == 200) {
+            this.$message.success('领取成功')
+          } else {
+            this.$message.error('领取失败')
+          }
+          this.refreshList()
+        })
+      }).catch(() => {
+      })
+    },
+
+    // 借用仪器
+    handlBorrow(index, row) {
+      this.$confirm(`是否借用该仪器`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        dangerouslyUseHTMLString: true,
+        center: true,
+        type: 'warning'
+      }).then(() => {
+        setJYDevice({ id: row.id }).then(response => {
+          const { statusCode } = response
+          if (statusCode == 200) {
+            this.$message.success('借用成功')
+          } else {
+            this.$message.error('借用失败')
+          }
+          this.refreshList()
+        })
+      }).catch(() => {
+      })
+    },
+
+    // 预约仪器
+    handlReserve(index, row) {
+      this.$confirm(`是否预约该仪器`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        dangerouslyUseHTMLString: true,
+        center: true,
+        type: 'warning'
+      }).then(() => {
+        setYYDevice({ id: row.id }).then(response => {
+          const { statusCode } = response
+          if (statusCode == 200) {
+            this.$message.success('预约成功')
+          } else {
+            this.$message.error('预约失败')
+          }
+          this.refreshList()
+        })
+      }).catch(() => {
+      })
+    },
+
+    // 归还仪器
+    handlReturn(index, row) {
+      this.$confirm(`是否归还该仪器`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        dangerouslyUseHTMLString: true,
+        center: true,
+        type: 'warning'
+      }).then(() => {
+        setGHDevice({ id: row.id }).then(response => {
+          const { statusCode } = response
+          if (statusCode == 200) {
+            this.$message.success('归还成功')
+          } else {
+            this.$message.error('归还失败')
+          }
+          this.refreshList()
+        })
+      }).catch(() => {
+      })
+    },
+
+    // 报废仪器
+    handlScrap(index, row) {
+      this.$confirm(`是否报废该仪器`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        dangerouslyUseHTMLString: true,
+        center: true,
+        type: 'warning'
+      }).then(() => {
+        setBFDevice({ id: row.id }).then(response => {
+          const { statusCode } = response
+          if (statusCode == 200) {
+            this.$message.success('报废成功')
+          } else {
+            this.$message.error('报废失败')
+          }
+          this.refreshList()
+        })
+      }).catch(() => {
+      })
+    },
+
     refreshList() {
       this.getList()
+    },
+
+    // 获取表格选择
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+
+    // 领用仪器
+    setCollect() {
+      if (this.multipleSelection.length > 0) {
+        console.log('领用')
+      }
     },
 
     // 监听多选框变化

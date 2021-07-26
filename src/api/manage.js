@@ -1,9 +1,16 @@
 import request from '@/utils/request'
+var gateway = ''
+if (process.env.NODE_ENV === 'development') {
+  // gateway = ''
+} else {
+  gateway = '/hustapi'
+}
 
 // post
 export function postAction(url, parameter) {
+  console.log(url, ' parameter', parameter)
   return request({
-    url: url,
+    url: gateway + url,
     method: 'post',
     // headers: {
     //   'Content-Type': 'application/json'
@@ -15,7 +22,7 @@ export function postAction(url, parameter) {
 // post method= {post | put}
 export function httpAction(url, parameter, method) {
   return request({
-    url: url,
+    url: gateway + url,
     method: method,
     data: parameter
   })
@@ -24,7 +31,7 @@ export function httpAction(url, parameter, method) {
 // put
 export function putAction(url, parameter) {
   return request({
-    url: url,
+    url: gateway + url,
     method: 'put',
     data: parameter
   })
@@ -33,7 +40,7 @@ export function putAction(url, parameter) {
 // get
 export function getAction(url, parameter) {
   return request({
-    url: url,
+    url: gateway + url,
     method: 'get',
     params: parameter
   })
@@ -42,7 +49,7 @@ export function getAction(url, parameter) {
 // deleteAction
 export function deleteAction(url, parameter) {
   return request({
-    url: url,
+    url: gateway + url,
     method: 'delete',
     params: parameter
   })

@@ -7,6 +7,8 @@ import { getToken } from '@/utils/auth' // 验权
 import {
   setTitle
 } from '@/utils/utils' // 设置浏览器头部标题
+import { getUserMenus } from '@/api/api'
+import { filterAsyncRouter } from '@/store/modules/permission'
 
 // permission judge function
 function hasPermission(roles, permissionRoles) {
@@ -38,10 +40,12 @@ router.beforeEach((to, from, next) => {
           const { data } = res
           const roles = data.userPower // note: roles must be a array! such as: ['editor','develop']
           console.log(roles)
-          store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-          })
+          // store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+          //   router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+          //   next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          // })
+          // 动态路由，拉取菜单
+          loadMenus(next, to, roles)
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {
             Message.error(err || 'Verification failed, please login again')
@@ -71,6 +75,19 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
+export const loadMenus = (next, to, roles) => {
+  getUserMenus().then(res => {
+    console.log(res.data, roles)
+    const asyncRouter = filterAsyncRouter(res.data, roles)
+
+    asyncRouter.push({ path: '*', redirect: '/404', hidden: true })
+    store.dispatch('GenerateRoutes', { asyncRouter, roles }).then(() => { // 存储路由
+      router.addRoutes(asyncRouter) // 动态添加可访问路由表
+      next({ ...to, replace: true })
+    })
+  })
+}
 
 router.afterEach(() => {
   NProgress.done() // 结束Progress

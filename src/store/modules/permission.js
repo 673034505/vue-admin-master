@@ -1,5 +1,5 @@
 import { asyncRouterMap, constantRouterMap } from '@/router'
-
+import Layout from '@/layout/Layout'
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
@@ -13,22 +13,47 @@ function hasPermission(roles, route) {
   }
 }
 
-/**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
- * @param asyncRouterMap
- * @param roles
- */
-function filterAsyncRouter(asyncRouterMap, roles) {
-  const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(roles, route)) {
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
+// /**
+//  * 递归过滤异步路由表，返回符合用户角色权限的路由表
+//  * @param asyncRouterMap
+//  * @param roles
+//  */
+// export function filterAsyncRouter(asyncRouterMap, roles) {
+//   const accessedRouters = asyncRouterMap.filter(route => {
+//     if (hasPermission(roles, route)) {
+//       if (route.children && route.children.length) {
+//         route.children = filterAsyncRouter(route.children, roles)
+//       }
+//       return true
+//     }
+//     return false
+//   })
+//   return accessedRouters
+// }
+
+export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象
+  // console.log(routers)
+  // return asyncRouterMap
+  return routers.filter(router => {
+    if (router.component) {
+      if (router.component === 'Layout') { // Layout组件特殊处理
+        router.component = Layout
+      } else if (router.component === '') {
+        router.component = Layout
+      } else {
+        const component = router.component
+        router.component = loadView(component)
       }
-      return true
     }
-    return false
+    if (router.children && router.children.length) {
+      router.children = filterAsyncRouter(router.children)
+    }
+    return true
   })
-  return accessedRouters
+}
+
+export const loadView = (view) => {
+  return (resolve) => require([`@/views/${view}`], resolve)
 }
 
 const permission = {
@@ -38,6 +63,7 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
+      console.log(state, routers)
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
       console.log('state.routers', state.routers)
@@ -45,23 +71,28 @@ const permission = {
   },
   actions: {
     GenerateRoutes({ commit }, data) {
+      console.log(data, '====data')
       return new Promise(resolve => {
-        const { roles } = data
+        const { roles, asyncRouter } = data
+
         let accessedRouters
+
         if (roles.indexOf('admin') >= 0) {
-          console.log('admin>=0')
-          accessedRouters = asyncRouterMap
+          accessedRouters = asyncRouter
         } else {
-          console.log('admin<0')
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+          // accessedRouters = filterAsyncRouter(asyncRouter, roles)
           // accessedRouters = ''
-          // accessedRouters = asyncRouterMap
+          accessedRouters = asyncRouter
         }
-        console.log('accessedRouters', accessedRouters)
+        // accessedRouters = asyncRouterMap
+        console.log(accessedRouters, '=========accessedRouters')
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })
     }
+    // GenerateRoutes({ commit }, asyncRouter) {
+    //   commit('SET_ROUTERS', asyncRouter)
+    // }
   }
 }
 

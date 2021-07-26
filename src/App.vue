@@ -39,4 +39,10 @@ export default {
      --tw-text-opacity: 1;
       color: rgba(16, 185, 129, var(--tw-text-opacity));
   }
+  [class^=ri-], [class*=" ri-"] {
+    font-family: 'remixicon' !important;
+  }
+  .align-middle{
+    vertical-align: middle;
+  }
 </style>

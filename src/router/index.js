@@ -194,7 +194,7 @@ export const asyncRouterMap = [
   {
     path: '/instrument',
     component: Layout,
-    redirect: '/instrument/materialPurchase',
+    redirect: '/instrument/existDevice',
     name: 'instrument',
     alwaysShow: true, // will always show the root menu
     meta: {
@@ -204,9 +204,9 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: 'materialPurchase',
-        // component: () => import('@/views/instrument/materialPurchase/materialPurchase'),
-        component: () => import('@/views/errorPage/407'),
+        path: 'existDevice',
+        component: () => import('@/views/instrument/exist-device'),
+        // component: () => import('@/views/errorPage/407'),
         name: 'materialPurchase',
         meta: {
           title: 'materialPurchase',
@@ -214,9 +214,8 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'materialStorage',
-        // component: () => import('@/views/instrument/materialStorage/materialStorage'),
-        component: () => import('@/views/errorPage/407'),
+        path: 'deviceList',
+        component: () => import('@/views/instrument/device-list'),
         name: 'materialStorage',
         meta: {
           title: 'materialStorage',
@@ -415,41 +414,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  // 基础数据
-  {
-    path: '/basicData',
-    component: Layout,
-    redirect: '/basicData/personManage',
-    name: 'basicData',
-    alwaysShow: true, // will always show the root menu
-    meta: {
-      title: 'basicData',
-      icon: 'deliveryManage',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'personManage',
-        component: () => import('@/views/basicData/personManage/personManage'),
-        // component: () => import('@/views/errorPage/407'),
-        name: 'personManage',
-        meta: {
-          title: 'personManage',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'supplierManage',
-        // component: () => import('@/views/basicData/supplierManage/supplierManage'),
-        component: () => import('@/views/errorPage/407'),
-        name: 'supplierManage',
-        meta: {
-          title: 'supplierManage',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      }
-    ]
-  },
   // 统计报表
   {
     path: '/statisticsForm',
@@ -491,6 +455,41 @@ export const asyncRouterMap = [
       //     roles: ['admin'] // or you can only set roles in sub nav
       //   }
       // }
+    ]
+  },
+  // 基础数据
+  {
+    path: '/basicData',
+    component: Layout,
+    redirect: '/basicData/personManage',
+    name: 'basicData',
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'basicData',
+      icon: 'deliveryManage',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'personManage',
+        component: () => import('@/views/basicData/personManage/personManage'),
+        // component: () => import('@/views/errorPage/407'),
+        name: 'personManage',
+        meta: {
+          title: 'personManage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'supplierManage',
+        // component: () => import('@/views/basicData/supplierManage/supplierManage'),
+        component: () => import('@/views/errorPage/407'),
+        name: 'supplierManage',
+        meta: {
+          title: 'supplierManage',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
     ]
   },
   {

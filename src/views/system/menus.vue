@@ -1,18 +1,17 @@
 <template>
   <el-main>
-    <!-- 搜索 -->
-    <el-form :inline="true" :model="listQuery">
-      <el-form-item>
-        <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="">搜索</el-button>
-        <el-button icon="el-icon-refresh" @click="">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-button class="filter-item" style="margin-left: 10px;" plain type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.add') }}</el-button>
+    <el-row
+      :gutter="10"
+      class="mb8"
+    >
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        plain
+        type="primary"
+        icon="el-icon-plus"
+        @click="handleAdd"
+      >{{ $t('i18nView.add') }}</el-button>
       <!-- <el-button class="filter-item" size="mini" style="margin-left: 10px;" plain type="success" icon="el-icon-edit" @click="handleEdit">修改</el-button> -->
       <!-- <el-button class="filter-item" size="mini" style="margin-left: 10px;" plain type="danger" icon="el-icon-delete" @click="handleEdit">删除</el-button> -->
 
@@ -20,20 +19,75 @@
     </el-row>
 
     <el-row>
-      <el-table v-loading="loading" :data="menuList" row-key="id" stripe border :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-        <el-table-column prop="name" maxlength="50" label="菜单名称" :show-overflow-tooltip="true" width="200" />
-        <el-table-column prop="icon" label="图标" align="center" width="100">
+      <el-table
+        v-loading="loading"
+        :data="menuList"
+        row-key="id"
+        stripe
+        border
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
+        <!-- <el-table-column
+          prop="name"
+          maxlength="50"
+          label="菜单名称"
+          :show-overflow-tooltip="true"
+          width="200"
+        /> -->
+        <!-- generateTitle -->
+        <el-table-column
+          prop="name"
+          maxlength="50"
+          label="菜单名称"
+          :show-overflow-tooltip="true"
+          width="200"
+        >
+          <template slot-scope="scope">
+            <span>{{ generateTitle(scope.row.name) }} </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="icon"
+          label="图标"
+          align="center"
+          width="100"
+        >
           <template slot-scope="scope">
             <svg-icon :icon-class="scope.row.icon" />
           </template>
         </el-table-column>
-        <el-table-column prop="sortIndex" label="排序" align="center" width="60" />
-        <el-table-column prop="viewPower" label="权限标识" align="center" :show-overflow-tooltip="true" />
-        <el-table-column prop="path" label="路由地址" align="center" :show-overflow-tooltip="true" />
-        <el-table-column prop="component" label="组件路径" align="center" :show-overflow-tooltip="true" />
-        <el-table-column align="center" fixed="right" label="操作" width="280">
+        <el-table-column
+          prop="sortIndex"
+          label="排序"
+          align="center"
+          width="60"
+        />
+        <!-- <el-table-column
+          prop="viewPower"
+          label="权限标识"
+          align="center"
+          :show-overflow-tooltip="true"
+        /> -->
+        <el-table-column
+          prop="path"
+          label="路由地址"
+          align="center"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="component"
+          label="组件路径"
+          align="center"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          align="center"
+          fixed="right"
+          label="操作"
+          width="280"
+        >
           <template slot-scope="scope">
-            <el-button
+            <!-- <el-button
               :size="formSize"
               type="text"
               icon="el-icon-search"
@@ -41,7 +95,7 @@
               @click="handleViewDetail(scope.$index, scope.row)"
             >
               <span class="text-sm">查看</span>
-            </el-button>
+            </el-button> -->
             <el-button
               v-if="!scope.row.issuedTime"
               :size="formSize"
@@ -68,48 +122,135 @@
     </el-row>
 
     <!-- 添加或修改菜单对话框 -->
-    <el-dialog :title="formTitle" :visible.sync="open" width="800px" append-to-body :close-on-click-modal="false" @close="cancel">
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+    <el-dialog
+      :title="formTitle"
+      :visible.sync="open"
+      width="800px"
+      append-to-body
+      :close-on-click-modal="false"
+      @close="cancel"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="120px"
+      >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="菜单名称" prop="name">
-              <el-input v-model="form.name" maxlength="50" placeholder="请输入菜单名称" />
+            <el-form-item
+              label="菜单名称"
+              prop="name"
+            >
+              <el-input
+                v-model="form.name"
+                maxlength="50"
+                placeholder="请输入菜单名称"
+              />
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="上级菜单">
-              <treeselect v-model="form.parentUID" :class="size" :load-options="loadOptions" :options="menuOptions" :normalizer="normalizer" :show-count="true" no-results-text="没有查询到菜单" placeholder="选择上级菜单" />
+              <treeselect
+                v-model="form.parentUID"
+                :class="size"
+                :load-options="loadOptions"
+                :options="menuOptions"
+                :normalizer="normalizer"
+                :show-count="true"
+                no-results-text="没有查询到菜单"
+                placeholder="选择上级菜单"
+              >
+                <label slot="option-label" slot-scope="{ node}">
+                  {{ node.label === '根菜单' ? node.label : generateTitle(node.label) }}
+                </label>
+              </treeselect>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="菜单图标">
-              <el-popover placement="bottom-start" width="680" trigger="click" @show="$refs['iconSelect'].reset()">
-                <IconSelect ref="iconSelect" @selected="selected" />
-                <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
-                  <svg-icon v-if="form.icon" slot="prefix" :icon-class="form.icon" class="el-input__icon" style="height: 32px;width: 16px;" />
-                  <i v-else slot="prefix" class="el-icon-search el-input__icon" />
+              <el-popover
+                placement="bottom-start"
+                width="680"
+                trigger="click"
+                @show="$refs['iconSelect'].reset()"
+              >
+                <IconSelect
+                  ref="iconSelect"
+                  @selected="selected"
+                />
+                <el-input
+                  slot="reference"
+                  v-model="form.icon"
+                  placeholder="点击选择图标"
+                  readonly
+                >
+                  <svg-icon
+                    v-if="form.icon"
+                    slot="prefix"
+                    :icon-class="form.icon"
+                    class="el-input__icon"
+                    style="height: 32px;width: 16px;"
+                  />
+                  <i
+                    v-else
+                    slot="prefix"
+                    class="el-icon-search el-input__icon"
+                  />
                 </el-input>
               </el-popover>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="显示排序" prop="sortIndex">
-              <el-input-number v-model="form.sortIndex" :max="999" step-strictly controls-position="right" :min="0" />
+            <el-form-item
+              label="显示排序"
+              prop="sortIndex"
+            >
+              <el-input-number
+                v-model="form.sortIndex"
+                :max="999"
+                step-strictly
+                controls-position="right"
+                :min="0"
+              />
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
-            <el-form-item label="路由地址" prop="path">
-              <el-input v-model="form.path" maxlength="50" placeholder="请输入路由地址" />
+            <el-form-item
+              label="路由地址"
+              prop="path"
+            >
+              <el-input
+                v-model="form.path"
+                maxlength="50"
+                placeholder="请输入路由地址"
+              />
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
-            <el-form-item label="组件路径" prop="component">
-              <el-input v-model="form.component" maxlength="255" placeholder="请输入组件路径" />
+            <el-form-item
+              label="组件路径"
+              prop="component"
+            >
+              <el-input
+                v-model="form.component"
+                maxlength="255"
+                placeholder="请输入组件路径"
+              />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="显示状态" prop="hidden">
+              <el-radio-group v-model="form.hidden">
+                <el-radio :label="false">是</el-radio>
+                <el-radio :label="true">否</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12">
@@ -130,8 +271,14 @@
           </el-col> -->
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="submitForm"
+        >确 定</el-button>
         <el-button @click="open = false">取 消</el-button>
       </div>
     </el-dialog>
@@ -139,11 +286,12 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { getQueryPower, getQueryMenus, getCreateMenus } from '@/api/api'
+import { getQueryPower, getQueryMenus, getCreateMenus, delMenus, UpdateMenus } from '@/api/api'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import IconSelect from '@/components/IconSelect'
 import local from '@/views/local'
+import { generateTitle } from '@/utils/i18n'
 const viewName = 'i18nView'
 export default {
   name: 'User',
@@ -260,17 +408,19 @@ export default {
       this.$i18n.mergeLocaleMessage('zh', local.zh)
     }
 
-    this.getList()
+    // this.getList()
 
     this.getTreeselect()
   },
 
   methods: {
-    loadOptions({ action, parentNode, callback }) {},
+    generateTitle,
+    loadOptions({ action, parentNode, callback }) { },
     handleNodeClick() {
     },
     /** 查询菜单下拉树结构 */
     getTreeselect() {
+      this.loading = true
       getQueryPower({}).then(response => {
         this.menuOptions = []
         const menu = {
@@ -281,6 +431,8 @@ export default {
         }
         menu.children = response.data
         this.menuOptions.push(menu)
+        this.loading = false
+        this.menuList = response.data
       })
     },
 
@@ -296,6 +448,10 @@ export default {
       }
     },
 
+    refreshList() {
+      this.getList()
+    },
+
     // 选择图标
     selected(name) {
       console.log(name)
@@ -305,7 +461,7 @@ export default {
     /** 查询菜单列表 */
     getList() {
       this.loading = true
-      getQueryPower(this.queryParams).then(response => {
+      getQueryPower({}).then(response => {
         this.menuList = response.data
         this.loading = false
       })
@@ -322,7 +478,7 @@ export default {
       this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.form.id !== undefined) {
-            updateMenu(this.form).then(response => {
+            UpdateMenus(this.form).then(response => {
               if (response.statusCode === 200) {
                 this.$message({
                   message: '修改成功',
@@ -365,69 +521,62 @@ export default {
       this.$refs[formName].resetFields()
       this.alertForm = {
         name: '',
-        phone: '',
-        address: '',
-        administerPoliceStation: '',
-        businessOrSchool: '',
-        belongingCommunity: '',
-        subordinateStreet: '',
-        victimLevel: '',
-        evilType: '',
-        occurTimeStr: '',
-        occurTime: '',
-        infoType: '',
-        evilInfo: '',
-        warnSource: '',
-        remark: '',
-        cheatType: '',
-        cheatState: '',
-        cheatMoney: '',
-        cheatTime: '',
-        professional: '',
-        disposalRemark: '',
-        reportState: '',
-        dissuadeSituation: '',
-        partiesPhotos: [],
-        liarPhotos: []
+        phone: ''
       }
     },
 
     // 编辑行数据
     handleEdit(row) {
+      this.reset()
       this.formTitle = '编辑'
-      this.dialogVisible = true
+      this.form = row
+      this.open = true
     },
 
     // 查看行数据
     handleViewDetail(index, row) {
       this.formTitle = '查看'
       this.viewMode = true
-      this.dialogVisible = true
+      this.open = true
+      // getQueryMenus
     },
 
     handleAdd() {
       this.open = true
       this.formTitle = '编辑'
     },
-
+    // 表单重置
+    reset() {
+      this.form = {
+        id: undefined,
+        parentUID: '-1',
+        name: undefined,
+        icon: undefined,
+        sortIndex: 1,
+        isFrame: false,
+        hidden: false,
+        keepAlive: false,
+        system: 0
+      }
+    },
     // 删除
     handleDelete(row) {
-      this.$confirm('删除此警情?', '提示', {
+      this.$confirm('删除该菜单?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
       }).then(() => {
-        // deleteAlertInfo(row.id).then(res => {
-        //   const { code, message } = res
-        //   if (code === 200) {
-        //     this.$message.error('删除成功')
-        //     this.refreshList()
-        //   } else {
-        //     this.$message.error(message)
-        //   }
-        // })
+        delMenus({ id: row.id }).then(res => {
+          const { statusCode, message } = res
+          if (statusCode === 200) {
+            this.$message.success('删除成功')
+            this.refreshList()
+          } else {
+            this.$message.error(message)
+          }
+        })
       }).catch(() => {
       })
     },
@@ -445,11 +594,10 @@ export default {
     cancel() {
       this.open = false
       this.reset()
-      this.getList()
+      // this.getList()
     }
   }
 }
 </script>
 <style lang="sass" scoped>
-
 </style>
