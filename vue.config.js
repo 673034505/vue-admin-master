@@ -5,7 +5,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = 'RRadmin' // page title
+// const name = 'RRadmin' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -13,6 +13,29 @@ const name = 'RRadmin' // page title
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+
+let proxy = {}
+if (process.env.NODE_ENV === 'development') {
+  proxy = {
+    '/api': {
+      target: process.env.VUE_APP_BASE_API,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': 'api'
+      }
+    }
+  }
+} else {
+  proxy = {
+    '/hustapi': {
+      target: process.env.VUE_APP_BASE_API,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/hustapi': ''
+      }
+    }
+  }
+}
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -46,37 +69,59 @@ module.exports = {
   publicPath: '/hust',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: false,
+  lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    // open: true,
     overlay: {
       warnings: false,
       errors: true
     },
-    proxy: {
-      '/api': {
-        target: process.env.VUE_APP_BASE_API,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': 'api'
-        }
+    proxy: proxy
+    // {
+    //   '/hustapi': {
+    //     target: process.env.VUE_APP_BASE_API,
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/hustapi': ''
+    //     }
+    //   }
+    //   // '/api': {
+    //   //   target: process.env.VUE_APP_BASE_API,
+    //   //   changeOrigin: true,
+    //   //   pathRewrite: {
+    //   //     '^/api': 'api'
+    //   //   }
+    //   // }
+    // }
+  },
+  // configureWebpack: {
+  //   // provide the app's title in webpack's name field, so that
+  //   // it can be accessed in index.html to inject the correct title.
+  //   name: name,
+  //   resolve: {
+  //     alias: {
+  //       '@': resolve('src')
+  //     }
+  //   }
+  // },
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') { // 为生产环境修改配置...
+      config.mode = 'production'
+      config['performance'] = {// 打包文件大小配置
+        'maxEntrypointSize': 10000000,
+        'maxAssetSize': 30000000
       }
     }
   },
-  configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
-    name: name,
-    resolve: {
-      alias: {
-        '@': resolve('src')
-      }
-    }
-  },
+
   chainWebpack(config) {
     // set svg-sprite-loader
+    config.plugins.delete('preload') // TODO: need test
+    config.plugins.delete('prefetch') // TODO: need test
+    config.resolve.alias
+      .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
