@@ -32,7 +32,7 @@
 
         </el-table>
 
-        <div
+        <!-- <div
           class="p-3 bg-gray-100 text-center"
           style="font-size: 0;	padding: 0.75rem;	text-align: center;"
         >
@@ -43,7 +43,7 @@
             :total="tableTotalCount"
             @change="handleAppPageChange"
           />
-        </div>
+        </div> -->
       </el-col>
     </el-row>
 
@@ -99,7 +99,6 @@ export default {
   data() {
     return {
       // 遮罩层
-      loadingRole: false,
       loadingUser: false,
       loadingRoleUser: false,
       // 表格高度
@@ -107,8 +106,6 @@ export default {
       // 角色列表
       dataRoleTable: [],
       // 已添加用户列表
-      dataRoleUserTable: [],
-      // 未添加用户列表
       dataUserTable: [],
       // 勾选添加用户列表
       addSelections: [],
@@ -121,12 +118,6 @@ export default {
       // 是否显示弹出层
       open: false,
 
-      listQuery: {
-        userName: ''
-
-      },
-      page: 1,
-      limit: 10,
       tableTotalCount: 0,
       listLoading: false,
       list: [],
@@ -137,10 +128,7 @@ export default {
       formSize: document.body.clientWidth < 1440 ? 'mini' : 'small',
       dialogVisible: false,
       fullScreen: false,
-      viewMode: false,
-      alertForm: {
-
-      }
+      viewMode: false
     }
   },
   computed: {
@@ -164,10 +152,6 @@ export default {
   },
 
   methods: {
-    handleSelectRole() {
-
-    },
-
     getRolesList() {
       this.loadingRoleUser = true
       getRolesInfo().then(response => {
@@ -198,83 +182,11 @@ export default {
           this.$message.error(message)
         }
       })
-
-    //   getRolesInfo().then(response => {
-    //     this.dataRoleTable = response.data
-    //     this.handleRoleTableSelection(this.dataRoleTable[0])
-    //     this.$refs.roleTable.setCurrentRow(this.dataRoleTable[0])
-    //     this.loadingRole = false
-    //   })
     },
 
     handleRoleTableSelection(row) {
       this.roleId = row.id
       this.getList()
-    },
-
-    refreshList() {
-      this.getList()
-    },
-
-    // 监听多选框变化
-    onSelectionChange(selection) {
-      const that = this
-      that.selection = []
-      selection.forEach(function(value, index) {
-        that.selection.push(value.id)
-      })
-    },
-
-    // 表单dialog关闭
-    handleClose(formName) {
-      this.viewMode = false
-      this.fullScreen = false
-      this.dialogVisible = false
-      this.$refs[formName].resetFields()
-      this.alertForm = {
-        userID: '', // 账号
-        password: '', // 密码
-        userName: '', // 姓名
-        email: '', // 邮箱
-        phone: '', // 电话
-        address: '', // 地址
-        sex: '' // 性别
-      }
-    },
-
-    // 添加
-    handleAdd() {
-      this.formTitle = '添加'
-      this.dialogVisible = true
-    },
-
-    // 编辑行数据
-    handleEdit(row) {
-      this.formTitle = '编辑'
-      // this.alertForm = row
-      this.getInfo(row)
-      this.dialogVisible = true
-    },
-
-    // 查看行数据
-    handleViewDetail(index, row) {
-      this.formTitle = '查看'
-      // this.alertForm = row
-      this.getInfo(row)
-      this.viewMode = true
-      this.dialogVisible = true
-    },
-
-    // 获取用户信息
-    getInfo(row) {
-      // this.alertForm = row
-      const params = { id: row.userID }
-      getUsersInfo(params).then(response => {
-        const { data, statusCode } = response
-        if (statusCode === 200) {
-          this.alertForm = data
-        }
-      })
     },
 
     // 删除角色用户
@@ -314,46 +226,6 @@ export default {
 
     handleAppPageChange(page) {
       console.log(page)
-    },
-
-    // 提交表单
-    handleSubmitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (this.formTitle === '添加') {
-            const params = this.alertForm
-            getUsersCreate(params).then(response => {
-              const { data, statusCode, message } = response
-              if (statusCode === 200) {
-                if (data === 1) {
-                  this.$message.success('添加成功')
-                  this.dialogVisible = false
-                  this.refreshList()
-                }
-              } else {
-                this.$message.error(message)
-              }
-            })
-          } else {
-            const params = this.alertForm
-            getUsersUpdate(params).then(response => {
-              const { data, statusCode, message } = response
-              if (statusCode === 200) {
-                if (data === 1) {
-                  this.$message.success('修改成功')
-                  this.dialogVisible = false
-                  this.refreshList()
-                }
-              } else {
-                this.$message.error(message)
-              }
-            })
-          }
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
     },
 
     // 获取未添加角色列表
