@@ -8,7 +8,6 @@ if (process.env.NODE_ENV === 'development') {
 
 // post
 export function postAction(url, parameter) {
-  console.log(url, ' parameter', parameter)
   return request({
     url: gateway + url,
     method: 'post',

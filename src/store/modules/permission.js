@@ -63,15 +63,12 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      console.log(state, routers)
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
-      console.log('state.routers', state.routers)
     }
   },
   actions: {
     GenerateRoutes({ commit }, data) {
-      console.log(data, '====data')
       return new Promise(resolve => {
         const { roles, asyncRouter } = data
 
@@ -85,7 +82,7 @@ const permission = {
           accessedRouters = asyncRouter
         }
         // accessedRouters = asyncRouterMap
-        console.log(accessedRouters, '=========accessedRouters')
+        // console.log(accessedRouters, '=========accessedRouters')
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })
