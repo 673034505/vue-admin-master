@@ -32,3 +32,9 @@ export const getRolesInfo = (params) => getAction('/api/Roles/Get', params) // �
 export const getRolesCreatee = (params) => postAction('/api/Roles/Create', params) // 添加角色定义
 export const getRolesUpdate = (params) => postAction('/api/Roles/Update', params) // 更新角色定义
 export const getRolesDelet = (params) => getAction('/api/Roles/Delete', params) // 删除角色定义
+
+// 用户角色
+export const getRolesUser = (params) => getAction('/api/RoleUsers/Get', params) // 查询角色定义
+export const getRolesUserCreate = (params) => postAction('/api/RoleUsers/Create', params) // 查询角色定义列表
+export const getRolesUserDelete = (params) => postAction('/api/RoleUsers/Delete', params) // 查询角色定义列表
+export const getRolesUserList = (params) => getAction('/api/RoleUsers/GetExcludeUsers', params) // 查询角色定义列表

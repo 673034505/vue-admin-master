@@ -22,49 +22,13 @@
       @row-click="onRowClick"
     >
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
-      <el-table-column
-        prop="id"
-        type="index"
-        label="序号"
-        width="50"
-        align="center"
-      />
-      <el-table-column
-        prop="userName"
-        :label="$t('i18nView.tableName')"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="userID"
-        label="账号"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="phone"
-        label="手机号"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="email"
-        label="邮箱"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="updateTime"
-        label="更新时间"
-        align="center"
-        show-overflow-tooltip
-      />
+      <el-table-column prop="id" type="index" label="序号" width="50" align="center" />
+      <el-table-column prop="userName" :label="$t('i18nView.tableName')" align="center" show-overflow-tooltip />
+      <el-table-column prop="userID" label="账号" align="center" show-overflow-tooltip />
+      <el-table-column prop="phone" label="手机号" align="center" show-overflow-tooltip />
+      <el-table-column prop="email" label="邮箱" align="center" show-overflow-tooltip />
+      <el-table-column prop="createTime" label="创建时间" align="center" show-overflow-tooltip />
+      <el-table-column prop="updateTime" label="更新时间" align="center" show-overflow-tooltip />
       <el-table-column align="center" fixed="right" label="操作" width="280">
         <template slot-scope="scope">
           <el-button

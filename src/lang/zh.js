@@ -40,11 +40,12 @@ export default {
     ManageAttrition: '管理药品耗损率',
 
     Menus: '菜单管理',
+    RoleUsers: '用户角色',
 
     Purchase: '采购',
     Supplier: '供货商信息管理',
     User: '用户管理',
-    Role: '角色管理',
+    Role: '角色定义',
     AliIcons: '阿里图标',
     contextmenu: '右键菜单',
     simple: '基础',
