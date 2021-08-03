@@ -221,6 +221,28 @@
 
           <el-col :span="24">
             <el-form-item
+              label="菜单权限"
+              prop="path"
+            >
+              <el-select
+                v-model="form.rote"
+                multiple
+                style="width:100%;"
+                placeholder="请选择"
+              >
+                <el-option
+
+                  v-for="item in roleList"
+                  :key="item.remark"
+                  :label="item.name"
+                  :value="item.remark"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
+            <el-form-item
               label="路由地址"
               prop="path"
             >
@@ -286,7 +308,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { getQueryPower, getQueryMenus, getCreateMenus, delMenus, UpdateMenus } from '@/api/api'
+import { getQueryPower, getQueryMenus, getRolesList, getCreateMenus, delMenus, UpdateMenus } from '@/api/api'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import IconSelect from '@/components/IconSelect'
@@ -328,36 +350,17 @@ export default {
       alertForm: {
         name: '',
         phone: '',
-        address: '',
-        administerPoliceStation: '',
-        businessOrSchool: '',
-        belongingCommunity: '',
-        subordinateStreet: '',
-        victimLevel: '',
-        evilType: '',
-        occurTimeStr: '',
-        occurTime: '',
-        infoType: '',
-        evilInfo: '',
-        warnSource: '',
-        remark: '',
-        cheatType: '',
-        cheatState: '',
-        cheatMoney: '',
-        cheatTime: '',
-        professional: '',
-        disposalRemark: '',
-        reportState: '',
-        dissuadeSituation: '',
-        partiesPhotos: [],
-        liarPhotos: []
+        address: ''
       },
+
+      value2: [],
 
       // 是否显示弹出层
       open: false,
       // 表单参数
       form: {
-        icon: ''
+        icon: '',
+        rote: []
       },
       // 查询参数
       queryParams: {
@@ -385,7 +388,8 @@ export default {
       menuOptions: [],
       // 菜单树选项
       // 归属系统选项
-      systemOptions: []
+      systemOptions: [],
+      roleList: []
     }
   },
   computed: {
@@ -409,7 +413,7 @@ export default {
     }
 
     // this.getList()
-
+    this.getRoles()
     this.getTreeselect()
   },
 
@@ -417,6 +421,24 @@ export default {
     generateTitle,
     loadOptions({ action, parentNode, callback }) { },
     handleNodeClick() {
+    },
+    /** 查询菜单列表 */
+    getRoles() {
+      const params = {
+        pageIndex: 1,
+        pageSize: 100,
+        orderBy: 0,
+        sort: '',
+        queryText: ''
+      }
+      getRolesList(params).then(response => {
+        const { data, statusCode, message } = response
+        if (statusCode === 200) {
+          this.roleList = data.dataSource
+        } else {
+          this.$message.error(message)
+        }
+      })
     },
     /** 查询菜单下拉树结构 */
     getTreeselect() {

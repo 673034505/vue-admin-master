@@ -16,12 +16,12 @@ export default {
       danger: '危险按钮',
       addUser: '新增用户',
 
-      // 公共
-
-      // 菜单
-
       add: '新增',
       edit: '修改'
+
+      // 公共
+
+      // 菜单页面
     }
 
   },
@@ -40,10 +40,6 @@ export default {
       warning: 'warning',
       danger: 'danger',
       addUser: 'addUser',
-
-      // 公共
-
-      // 菜单
 
       add: 'add',
       edit: 'edit'

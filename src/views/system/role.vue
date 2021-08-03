@@ -124,7 +124,7 @@
           <el-col :span="24">
             <el-form-item
               prop="remark"
-              label="手机号"
+              label="权限"
             >
               <el-input
                 v-model.trim="form.remark"

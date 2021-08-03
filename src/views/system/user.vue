@@ -3,9 +3,6 @@
     <!-- 搜索 -->
     <el-form :inline="true" :model="listQuery">
       <el-form-item>
-        <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />
-      </el-form-item>
-      <el-form-item>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.addUser') }}</el-button>
         <!-- <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleEdit">编辑角色</el-button>
         <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit">密码重置</el-button> -->
@@ -66,7 +63,7 @@
     </el-table>
 
     <div
-      class="p-3 bg-gray-100 text-center"
+      class="p-3 text-center bg-gray-100"
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
@@ -105,10 +102,7 @@
               prop="userID"
               label="账号"
             >
-              <el-input
-                v-model.trim="alertForm.userID"
-                placeholder="请输入用户编号"
-              />
+              <el-input v-model.trim="alertForm.userID" placeholder="请输入用户编号" />
             </el-form-item>
           </el-col>
 
