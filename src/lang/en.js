@@ -12,20 +12,26 @@ export default {
     Default: 'Default'
   },
   route: {
-    UserAdmin: '系统管理',
-    instrument: '仪器设备',
     warehoseManag: '入库管理',
-    materialPurchase: '采购',
-    materialStorage: '入库',
-    revert: '归还',
-    dictiona: '字典管理',
+
+    instrument: 'Instrument',
+    materialPurchase: 'MaterialPurchase',
+    materialStorage: 'MaterialStorage',
+    revert: 'Revert',
+    User: 'User',
+    Role: 'Role',
+    UserRole: 'UserRole',
+    RoleDefinition: 'RoleDefinition',
+    basicData: 'BasicData',
+    Menus: 'Menus',
+    dictiona: 'Dictiona',
+    UserAdmin: 'UserAdmin',
 
     toolMaterials: '工具耗材',
     deliveryManage: '出库管理',
     collectManage: '领用管理',
     ScrapManage: '报废管理',
 
-    basicData: '基础数据',
     personManage: '人员管理',
     supplierManage: '供应商管理',
 
@@ -34,11 +40,9 @@ export default {
     capitalFlowInfo: '资产流动信息',
     ManageAttrition: '管理药品耗损率',
 
-    Menus: '菜单管理',
     Purchase: 'purchase',
     Supplier: 'supplier',
-    User: '用户管理',
-    Role: '角色管理',
+
     AliIcons: 'AliIcons',
     list: 'list',
     Digitalanimation: 'Digitalanimation',
@@ -148,6 +152,6 @@ export default {
     documentation: 'documentation'
   },
   common: {
-    title: '管理系统1'
+    title: 'AdminSystem'
   }
 }

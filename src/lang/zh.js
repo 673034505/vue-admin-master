@@ -22,6 +22,11 @@ export default {
     revert: '归还',
     scrap: '报废',
     dictiona: '字典管理',
+    User: '用户管理',
+    Role: '角色定义',
+    Menus: '菜单管理',
+    RoleUsers: '用户角色',
+    basicData: '用户管理',
 
     reagentDrugs: '试剂药品',
     toolMaterials: '工具耗材',
@@ -30,7 +35,6 @@ export default {
     collectManage: '领用管理',
     ScrapManage: '报废管理',
 
-    basicData: '用户管理',
     personManage: '用户列表',
     supplierManage: '供应商管理',
 
@@ -39,13 +43,8 @@ export default {
     capitalFlowInfo: '资产流动信息',
     ManageAttrition: '管理药品耗损率',
 
-    Menus: '菜单管理',
-    RoleUsers: '用户角色',
-
     Purchase: '采购',
     Supplier: '供货商信息管理',
-    User: '用户管理',
-    Role: '角色定义',
     AliIcons: '阿里图标',
     contextmenu: '右键菜单',
     simple: '基础',
