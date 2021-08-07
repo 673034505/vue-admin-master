@@ -7,11 +7,10 @@
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
-        plain
         type="primary"
         icon="el-icon-plus"
         @click="handleAdd"
-      >{{ $t('i18nView.add') }}</el-button>
+      >{{ $t('i18nView.AddMenus') }}</el-button>
       <!-- <el-button class="filter-item" size="mini" style="margin-left: 10px;" plain type="success" icon="el-icon-edit" @click="handleEdit">修改</el-button> -->
       <!-- <el-button class="filter-item" size="mini" style="margin-left: 10px;" plain type="danger" icon="el-icon-delete" @click="handleEdit">删除</el-button> -->
 

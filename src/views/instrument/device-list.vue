@@ -1,16 +1,14 @@
 <template>
   <el-main>
     <!-- 搜索 -->
-    <el-form :inline="true" :model="listQuery">
+    <!-- <el-form :inline="true" :model="listQuery">
       <el-form-item>
         <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.addUser') }}</el-button>
-        <!-- <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleEdit">编辑角色</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit">密码重置</el-button> -->
       </el-form-item>
-    </el-form>
+    </el-form> -->
 
     <!-- <el-row
       :gutter="10"
@@ -35,20 +33,20 @@
       @selection-change="handleSelectionChange"
     >
       <!-- <el-table-column sortable type="selection" width="55" align="center" /> -->
-      <el-table-column prop="id" type="index" label="序号" width="50" align="center" />
-      <el-table-column prop="text" label="设备名称" align="center" show-overflow-tooltip />
-      <el-table-column prop="value" label="设备编码" align="center" show-overflow-tooltip />
-      <el-table-column prop="type" label="设备类型" align="center" show-overflow-tooltip />
-      <el-table-column prop="isvalid" label="设备编码" align="center" show-overflow-tooltip />
-      <el-table-column prop="level" label="设备编码" align="center" show-overflow-tooltip />
-      <el-table-column prop="parent" label="设备编码" align="center" show-overflow-tooltip />
+      <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" />
+      <el-table-column prop="text" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
+      <el-table-column prop="value" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
+      <el-table-column prop="type" :label="$t('i18nView.EquipmentType')" align="center" show-overflow-tooltip />
+      <el-table-column prop="isvalid" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
+      <el-table-column prop="level" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
+      <el-table-column prop="parent" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
       <!-- <el-table-column
         prop="supplytime"
         label="更新时间"
         align="center"
         show-overflow-tooltip
       /> -->
-      <el-table-column align="center" fixed="right" label="设备管理" width="320">
+      <el-table-column align="center" fixed="right" :label="$t('i18nView.DeviceManagement')" width="350">
         <template slot-scope="scope">
           <el-button
             :size="formSize"
@@ -57,7 +55,7 @@
             class="-my-1"
             @click="handlCollect(scope.$index, scope.row)"
           >
-            <span class="text-sm">领用</span>
+            <span class="text-sm">{{ $t('i18nView.Claim') }}</span>
           </el-button>
           <el-button
             :size="formSize"
@@ -66,7 +64,7 @@
             class="-my-1"
             @click="handlReturn(scope.$index, scope.row)"
           >
-            <span class="text-sm">归还</span>
+            <span class="text-sm">{{ $t('i18nView.Return') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -76,7 +74,7 @@
             class="-my-1"
             @click="handlBorrow(scope.$index, scope.row)"
           >
-            <span class="text-sm">借用</span>
+            <span class="text-sm">{{ $t('i18nView.Borrow') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -86,7 +84,7 @@
             class="-my-1 "
             @click="handlReserve(scope.$index, scope.row)"
           >
-            <span class="text-sm">预约</span>
+            <span class="text-sm">{{ $t('i18nView.Reserve') }}</span>
           </el-button>
 
           <el-button
@@ -96,12 +94,12 @@
             class="-my-1 text-red-500"
             @click="handlScrap(scope.$index, scope.row)"
           >
-            <span class="text-sm">报废</span>
+            <span class="text-sm">{{ $t('i18nView.Scrap') }}</span>
           </el-button>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" fixed="right" label="操作" width="180">
+      <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="160">
         <template slot-scope="scope">
           <el-button
             v-if="!scope.row.issuedTime"
@@ -111,7 +109,7 @@
             class="-my-1"
             @click="handleEdit(scope.row)"
           >
-            <span class="text-sm">编辑</span>
+            <span class="text-sm">{{ $t('i18nView.Edit') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -121,7 +119,7 @@
             class="-my-1 text-red-500"
             @click="handleDelete(scope.row)"
           >
-            <span class="text-sm">删除</span>
+            <span class="text-sm">{{ $t('i18nView.Delete') }}</span>
           </el-button>
         </template>
       </el-table-column>
@@ -387,9 +385,9 @@ export default {
 
     // 领用仪器
     handlCollect(index, row) {
-      this.$confirm(`是否领用该仪器`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(`${this.$t('i18nView.InstrumentWant')}`, `${this.$t('i18nView.Tips')}`, {
+        confirmButtonText: `${this.$t('i18nView.Determine')}`,
+        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
@@ -397,9 +395,9 @@ export default {
         setLYDevice({ id: row.id }).then(response => {
           const { statusCode } = response
           if (statusCode == 200) {
-            this.$message.success('领取成功')
+            this.$message.success(`${this.$t('i18nView.Claim')}${this.$t('i18nView.Success')}`)
           } else {
-            this.$message.error('领取失败')
+            this.$message.error(`${this.$t('i18nView.Claim')}${this.$t('i18nView.Error')}`)
           }
           this.refreshList()
         })
@@ -409,9 +407,9 @@ export default {
 
     // 借用仪器
     handlBorrow(index, row) {
-      this.$confirm(`是否借用该仪器`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(`${this.$t('i18nView.InstrumenBorrow')}`, `${this.$t('i18nView.Tips')}`, {
+        confirmButtonText: `${this.$t('i18nView.Determine')}`,
+        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
@@ -419,9 +417,9 @@ export default {
         setJYDevice({ id: row.id }).then(response => {
           const { statusCode } = response
           if (statusCode == 200) {
-            this.$message.success('借用成功')
+            this.$message.success(`${this.$t('i18nView.Borrow')}${this.$t('i18nView.Success')}`)
           } else {
-            this.$message.error('借用失败')
+            this.$message.error(`${this.$t('i18nView.Borrow')}${this.$t('i18nView.Error')}`)
           }
           this.refreshList()
         })
@@ -431,9 +429,9 @@ export default {
 
     // 预约仪器
     handlReserve(index, row) {
-      this.$confirm(`是否预约该仪器`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(`${this.$t('i18nView.InstrumenReserve')}`, `${this.$t('i18nView.Tips')}`, {
+        confirmButtonText: `${this.$t('i18nView.Determine')}`,
+        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
@@ -441,9 +439,9 @@ export default {
         setYYDevice({ id: row.id }).then(response => {
           const { statusCode } = response
           if (statusCode == 200) {
-            this.$message.success('预约成功')
+            this.$message.success(`${this.$t('i18nView.Reserve')}${this.$t('i18nView.Success')}`)
           } else {
-            this.$message.error('预约失败')
+            this.$message.error(`${this.$t('i18nView.Reserve')}${this.$t('i18nView.Error')}`)
           }
           this.refreshList()
         })
@@ -453,9 +451,9 @@ export default {
 
     // 归还仪器
     handlReturn(index, row) {
-      this.$confirm(`是否归还该仪器`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(`${this.$t('i18nView.InstrumenReturn')}`, `${this.$t('i18nView.Tips')}`, {
+        confirmButtonText: `${this.$t('i18nView.Determine')}`,
+        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
@@ -463,9 +461,9 @@ export default {
         setGHDevice({ id: row.id }).then(response => {
           const { statusCode } = response
           if (statusCode == 200) {
-            this.$message.success('归还成功')
+            this.$message.success(`${this.$t('i18nView.Return')}${this.$t('i18nView.Success')}`)
           } else {
-            this.$message.error('归还失败')
+            this.$message.error(`${this.$t('i18nView.Return')}${this.$t('i18nView.Error')}`)
           }
           this.refreshList()
         })
@@ -475,9 +473,9 @@ export default {
 
     // 报废仪器
     handlScrap(index, row) {
-      this.$confirm(`是否报废该仪器`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(`${this.$t('i18nView.InstrumenScrap')}`, `${this.$t('i18nView.Tips')}`, {
+        confirmButtonText: `${this.$t('i18nView.Determine')}`,
+        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
@@ -485,9 +483,9 @@ export default {
         setBFDevice({ id: row.id }).then(response => {
           const { statusCode } = response
           if (statusCode == 200) {
-            this.$message.success('报废成功')
+            this.$message.success(`${this.$t('i18nView.Scrap')}${this.$t('i18nView.Success')}`)
           } else {
-            this.$message.error('报废失败')
+            this.$message.error(`${this.$t('i18nView.Scrap')}${this.$t('i18nView.Error')}`)
           }
           this.refreshList()
         })

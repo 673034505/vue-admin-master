@@ -1,16 +1,14 @@
 <template>
   <el-main>
     <!-- 搜索 -->
-    <el-form :inline="true" :model="listQuery">
+    <!-- <el-form :inline="true" :model="listQuery">
       <el-form-item>
         <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.addUser') }}</el-button>
-        <!-- <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleEdit">编辑角色</el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit">密码重置</el-button> -->
       </el-form-item>
-    </el-form>
+    </el-form> -->
 
     <!-- 表格 -->
     <el-table
@@ -22,50 +20,14 @@
       @row-click="onRowClick"
     >
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
-      <el-table-column
-        prop="id"
-        type="index"
-        label="序号"
-        width="50"
-        align="center"
-      />
-      <el-table-column
-        prop="model"
-        label="型号"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="adminname"
-        label="入库老师"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="serialno"
-        label="编号"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="statusName"
-        label="是否在库"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="subcategoryName"
-        label="设备名称"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        prop="supplytime"
-        label="更新时间"
-        align="center"
-        show-overflow-tooltip
-      />
-      <el-table-column align="center" fixed="right" label="操作" width="280">
+      <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" />
+      <el-table-column prop="model" :label="$t('i18nView.Model')" align="center" show-overflow-tooltip />
+      <el-table-column prop="adminname" :label="$t('i18nView.WarehousingTeacher')" align="center" show-overflow-tooltip />
+      <el-table-column prop="serialno" :label="$t('i18nView.Number')" align="center" show-overflow-tooltip />
+      <el-table-column prop="statusName" :label="$t('i18nView.InLibrary')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
+      <el-table-column prop="supplytime" :label="$t('i18nView.UpdateTime')" align="center" show-overflow-tooltip />
+      <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="280">
         <template slot-scope="scope">
           <el-button
             :size="formSize"
@@ -74,7 +36,7 @@
             class="-my-1"
             @click="handleViewDetail(scope.$index, scope.row)"
           >
-            <span class="text-sm">查看</span>
+            <span class="text-sm">{{ $t('i18nView.See') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -84,7 +46,7 @@
             class="-my-1"
             @click="handleEdit(scope.row)"
           >
-            <span class="text-sm">编辑</span>
+            <span class="text-sm">{{ $t('i18nView.Edit') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -94,7 +56,7 @@
             class="-my-1 text-red-500"
             @click="handleDelete(scope.row)"
           >
-            <span class="text-sm">删除</span>
+            <span class="text-sm">{{ $t('i18nView.Delete') }}</span>
           </el-button>
         </template>
       </el-table-column>

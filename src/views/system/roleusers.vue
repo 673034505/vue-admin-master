@@ -3,14 +3,14 @@
     <el-row :gutter="24">
       <el-col :span="4">
         <el-table ref="roleTable" v-loading="loadingRoleUser" highlight-current-row :data="dataRoleTable" border :height="tableHeight-135" @row-click="handleRoleTableSelection">
-          <el-table-column prop="name" label="角色名称" />
+          <el-table-column prop="name" :label="$t('i18nView.RoleName')" />
         </el-table>
       </el-col>
       <el-col :span="20">
         <el-form style="display:flex" :inline="true" @submit.native.prevent>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-plus" @click="handleGetUserTable">添加用户</el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="handleDelete">删除用户</el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="handleGetUserTable">{{ $t('i18nView.addUser') }}</el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="handleDelete">{{ $t('i18nView.DeleteUser') }}</el-button>
           </el-form-item>
         </el-form>
         <!-- 表格 -->
@@ -24,11 +24,11 @@
         >
           <el-table-column type="selection" width="50" align="center" fixed="left" />
           <!-- <el-table-column prop="id" type="index" label="序号" width="50" align="center" /> -->
-          <el-table-column prop="userID" label="用户账号" align="center" show-overflow-tooltip />
-          <el-table-column prop="userName" :label="$t('i18nView.tableName')" align="center" show-overflow-tooltip />
-          <el-table-column prop="sex" label="性别" align="center" show-overflow-tooltip />
-          <el-table-column prop="phone" label="手机号" align="center" show-overflow-tooltip />
-          <el-table-column prop="email" label="邮箱" align="center" show-overflow-tooltip />
+          <el-table-column prop="userID" :label="$t('i18nView.AccountNumber')" align="center" show-overflow-tooltip />
+          <el-table-column prop="userName" :label="$t('i18nView.Name')" align="center" show-overflow-tooltip />
+          <el-table-column prop="sex" :label="$t('i18nView.Gender')" align="center" show-overflow-tooltip />
+          <el-table-column prop="phone" :label="$t('i18nView.PhoneNumber')" align="center" show-overflow-tooltip />
+          <el-table-column prop="email" :label="$t('i18nView.Mailbox')" align="center" show-overflow-tooltip />
 
         </el-table>
 
@@ -58,15 +58,19 @@
         <el-col>
           <el-table ref="userTable" v-loading="loadingUser" :data="dataUserTable.filter(data => !search || data.userID.toLowerCase().includes(search.toLowerCase()) || data.userName.toLowerCase().includes(search.toLowerCase()))" row-key="userId" stripe border :height="tableHeight*0.5">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column prop="userID" align="center" label="用户账号" width="150" />
+            <!-- <el-table-column prop="userID" align="center" label="用户账号" width="150" />
             <el-table-column prop="userName" align="center" label="用户名称" width="150" />
-            <el-table-column prop="sex" align="center" label="性别" width="80" />
+            <el-table-column prop="sex" align="center" label="性别" width="80" /> -->
+
+            <el-table-column prop="userID" :label="$t('i18nView.AccountNumber')" align="center" show-overflow-tooltip />
+            <el-table-column prop="userName" :label="$t('i18nView.Name')" align="center" show-overflow-tooltip />
+            <el-table-column prop="sex" :label="$t('i18nView.Gender')" align="center" show-overflow-tooltip />
             <!-- <el-table-column prop="enabled" align="center" label="是否启用" width="80">
               <template slot-scope="scope" label="操作">
                 <i :style="scope.row.enabled === true ?'color:green':'color:red'" :class="scope.row.enabled === true ? 'el-icon-success ':'el-icon-error'" />
               </template>
             </el-table-column> -->
-            <el-table-column prop="remark" align="center" label="备注" />
+            <el-table-column prop="remark" align="center" :label="$t('i18nView.Remarks')" />
           </el-table>
         </el-col>
       </el-row>

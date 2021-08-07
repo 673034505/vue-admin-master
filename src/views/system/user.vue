@@ -19,14 +19,14 @@
       @row-click="onRowClick"
     >
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
-      <el-table-column prop="id" type="index" label="序号" width="50" align="center" />
-      <el-table-column prop="userName" :label="$t('i18nView.tableName')" align="center" show-overflow-tooltip />
-      <el-table-column prop="userID" label="账号" align="center" show-overflow-tooltip />
-      <el-table-column prop="phone" label="手机号" align="center" show-overflow-tooltip />
-      <el-table-column prop="email" label="邮箱" align="center" show-overflow-tooltip />
-      <el-table-column prop="createTime" label="创建时间" align="center" show-overflow-tooltip />
-      <el-table-column prop="updateTime" label="更新时间" align="center" show-overflow-tooltip />
-      <el-table-column align="center" fixed="right" label="操作" width="280">
+      <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" />
+      <el-table-column prop="userName" :label="$t('i18nView.Name')" align="center" show-overflow-tooltip />
+      <el-table-column prop="userID" :label="$t('i18nView.AccountNumber')" align="center" show-overflow-tooltip />
+      <el-table-column prop="phone" :label="$t('i18nView.PhoneNumber')" align="center" show-overflow-tooltip />
+      <el-table-column prop="email" :label="$t('i18nView.Mailbox')" align="center" show-overflow-tooltip />
+      <el-table-column prop="createTime" :label="$t('i18nView.CreateTime')" align="center" show-overflow-tooltip />
+      <el-table-column prop="updateTime" :label="$t('i18nView.UpdateTime')" align="center" show-overflow-tooltip />
+      <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="280">
         <template slot-scope="scope">
           <el-button
             :size="formSize"
@@ -35,7 +35,7 @@
             class="-my-1"
             @click="handleViewDetail(scope.$index, scope.row)"
           >
-            <span class="text-sm">查看</span>
+            <span class="text-sm">{{ $t('i18nView.See') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -45,7 +45,7 @@
             class="-my-1"
             @click="handleEdit(scope.row)"
           >
-            <span class="text-sm">编辑</span>
+            <span class="text-sm">{{ $t('i18nView.Edit') }}</span>
           </el-button>
           <el-button
             v-if="!scope.row.issuedTime"
@@ -55,7 +55,7 @@
             class="-my-1 text-red-500"
             @click="handleDelete(scope.row)"
           >
-            <span class="text-sm">删除</span>
+            <span class="text-sm">{{ $t('i18nView.Delete') }}</span>
           </el-button>
         </template>
       </el-table-column>
@@ -95,12 +95,21 @@
         :disabled="viewMode"
         :rules="rules"
       >
-        <el-divider content-position="left"><b>人员信息</b></el-divider>
+
+        <!-- <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" />
+      <el-table-column prop="userName" :label="$t('i18nView.Name')" align="center" show-overflow-tooltip />
+      <el-table-column prop="userID" :label="$t('i18nView.AccountNumber')" align="center" show-overflow-tooltip />
+      <el-table-column prop="phone" :label="$t('i18nView.PhoneNumber')" align="center" show-overflow-tooltip />
+      <el-table-column prop="email" :label="$t('i18nView.Mailbox')" align="center" show-overflow-tooltip />
+      <el-table-column prop="createTime" :label="$t('i18nView.CreateTime')" align="center" show-overflow-tooltip />
+      <el-table-column prop="updateTime" :label="$t('i18nView.UpdateTime')" align="center" show-overflow-tooltip />
+      <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="280"> -->
+        <el-divider content-position="left"><b>{{ $t('i18nView.PersonnelInformation') || 人员信息 }}</b></el-divider>
         <el-row :gutter="10">
           <el-col :span="24">
             <el-form-item
               prop="userID"
-              label="账号"
+              :label="$t('i18nView.AccountNumber') || 账号"
             >
               <el-input v-model.trim="alertForm.userID" placeholder="请输入用户编号" />
             </el-form-item>
@@ -109,7 +118,7 @@
           <el-col :span="24">
             <el-form-item
               prop="password"
-              label="密码"
+              :label="$t('i18nView.PassWord') || 密码"
             >
               <el-input
                 v-model.trim="alertForm.password"
@@ -122,7 +131,7 @@
           <el-col :span="24">
             <el-form-item
               prop="userName"
-              label="姓名"
+              :label="$t('i18nView.Name') || 姓名"
             >
               <el-input
                 v-model.trim="alertForm.userName"
@@ -131,7 +140,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item prop="email" label="邮箱">
+            <el-form-item prop="email" :label="$t('i18nView.Mailbox') || 邮箱">
               <el-input v-model.trim="alertForm.email" placeholder="请选择邮箱" />
             </el-form-item>
           </el-col>
@@ -139,7 +148,7 @@
           <el-col :span="24">
             <el-form-item
               prop="sex"
-              label="性别"
+              :label="$t('i18nView.Gender') || 性别"
             >
               <el-select v-model="alertForm.sex" style="width:100%;" placeholder="请选择性别">
                 <el-option label="男" value="男" />
@@ -150,7 +159,7 @@
           <el-col :span="24">
             <el-form-item
               prop="phone"
-              label="手机号"
+              :label="$t('i18nView.PhoneNumber') || 手机号"
             >
               <el-input
                 v-model.number="alertForm.phone"
@@ -161,7 +170,7 @@
           <el-col :span="24">
             <el-form-item
               prop="Address"
-              label="地址"
+              :label="$t('i18nView.Address') || 地址"
             >
               <el-input
                 v-model.trim="alertForm.Address"
@@ -176,8 +185,8 @@
 
       <template slot="footer">
         <div class="text-center">
-          <el-button :size="formSize" @click="handleClose('alertForm')">{{ viewMode ? '关 闭' : '取 消' }}</el-button>
-          <el-button v-show="!viewMode" type="primary" :size="formSize" @click="handleSubmitForm('alertForm')">确 定</el-button>
+          <el-button :size="formSize" @click="handleClose('alertForm')"> {{ viewMode ? ($t('i18nView.Close') ||'关 闭') : ( $t('i18nView.Cancel')|| '取 消') }} </el-button>
+          <el-button v-show="!viewMode" type="primary" :size="formSize" @click="handleSubmitForm('alertForm')"> {{ $t('i18nView.Determine') || '确 定' }}</el-button>
         </div>
       </template>
 
