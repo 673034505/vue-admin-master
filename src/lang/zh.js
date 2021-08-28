@@ -18,7 +18,9 @@ export default {
     instrument: '仪器设备',
     warehoseManag: '入库管理',
     materialPurchase: '采购',
-    materialStorage: '入库',
+    materialStorage: '出库',
+    TheLibrary: '入库',
+    WuPingbianhao: '物品编号',
     revert: '归还',
     scrap: '报废',
     dictiona: '字典管理',
@@ -30,6 +32,10 @@ export default {
 
     reagentDrugs: '试剂药品',
     toolMaterials: '工具耗材',
+    Query: '查询',
+    TueLog: '日志',
+    InstrumentList: '仪器',
+    CompanyList: '公司',
 
     deliveryManage: '出库管理',
     collectManage: '领用管理',

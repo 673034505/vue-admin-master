@@ -2,19 +2,9 @@
   <el-main>
     <!-- 搜索 -->
     <el-form :inline="true" :model="listQuery">
-      <el-form-item :label="$t('i18nView.ChuCanBianHao')">
-        <el-input v-model="listQuery.name" placeholder="请输入内容" />
-      </el-form-item>
-      <el-form-item :label="$t('i18nView.WuPinMingChen')">
-        <el-input v-model="listQuery.name" placeholder="请输入内容" />
-      </el-form-item>
-      <el-form-item :label="$t('i18nView.WuPinLeiBie')">
-        <el-input v-model="listQuery.name" placeholder="请输入内容" />
-      </el-form-item>
-      <el-form-item>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleSearch"> {{ $t('i18nView.Search') }} </el-button>
-        <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-plus" @click="handleAdd">{{ $t('i18nView.addCaiGou') }}</el-button>
-      </el-form-item>
+      <!-- <el-form-item>
+        <el-input v-model="listQuery.userName" placeholder="用户名" style="width: 180px;" class="filter-item" />
+      </el-form-item> -->
     </el-form>
 
     <!-- 表格 -->
@@ -28,37 +18,45 @@
     >
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
       <!-- <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" /> -->
-      <el-table-column prop="serialno" :label="$t('i18nView.CaiGouBianHao')" align="center" show-overflow-tooltip />
-      <el-table-column prop="subcategoryName" :label="$t('i18nView.WuPinMingChen')" align="center" show-overflow-tooltip />
-      <el-table-column prop="model" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
-      <el-table-column prop="adminname" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
-      <el-table-column prop="statusName" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.ZhuanHuan')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
+      <!-- <el-table-column prop="serialno" :label="$t('i18nView.Number')" align="center" show-overflow-tooltip /> -->
+      <el-table-column prop="serialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
+      <el-table-column prop="devicename" :label="$t('i18nView.ItemName')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.WuPinLeiXin')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
+      <el-table-column prop="num" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.ZhuanHuan')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
 
+      <!-- <el-table-column prop="subcategoryName" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
+      <el-table-column prop="model" :label="$t('i18nView.Model')" align="center" show-overflow-tooltip />
+      <el-table-column prop="adminname" :label="$t('i18nView.WarehousingTeacher')" align="center" show-overflow-tooltip />
+      <el-table-column prop="statusName" :label="$t('i18nView.InLibrary')" align="center" show-overflow-tooltip />
+      <el-table-column prop="supplytime" :label="$t('i18nView.UpdateTime')" align="center" show-overflow-tooltip /> -->
       <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="280">
         <template slot-scope="scope">
           <el-button
+            v-if="!scope.row.issuedTime"
             :size="formSize"
             type="text"
             icon="el-icon-search"
             class="-my-1"
-            @click="handleViewDetail(scope.$index, scope.row)"
+            @click="handleViewDetail(scope.row)"
           >
-            <span class="text-sm">{{ $t('i18nView.See') }}</span>
+            <span class="text-sm">详情 </span>
           </el-button>
           <el-button
-            v-if="!scope.row.issuedTime"
             :size="formSize"
             type="text"
             icon="el-icon-edit"
             class="-my-1"
             @click="handleEdit(scope.row)"
           >
-            <span class="text-sm">{{ $t('i18nView.Edit') }}</span>
+            <span class="text-sm">入库</span>
           </el-button>
+
           <el-button
             v-if="!scope.row.issuedTime"
             :size="formSize"
@@ -67,20 +65,7 @@
             class="-my-1 text-red-500"
             @click="handleDelete(scope.row)"
           >
-            <span class="text-sm">{{ $t('i18nView.Delete') }}</span>
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="150">
-        <template slot-scope="scope">
-          <el-button
-            :size="formSize"
-            type="primary"
-            icon="el-icon-search"
-            class="-my-1"
-            @click="handlEaudit( scope.row)"
-          >
-            <span class="text-sm">{{ $t('i18nView.ShenPi') }} </span>
+            <span class="text-sm"> 退货 </span>
           </el-button>
         </template>
       </el-table-column>
@@ -122,6 +107,7 @@
       >
         <el-divider content-position="left"><b>{{ $t('i18nView.WuPinXinXi') }}</b></el-divider>
         <el-row :gutter="10">
+
           <el-col :span="24">
             <el-form-item prop="devicename" :label="$t('i18nView.WuPinMingChen')">
               <el-input v-model.trim="form.devicename" placeholder="请输入" />
@@ -129,20 +115,7 @@
           </el-col>
 
           <el-col :span="24">
-            <el-form-item prop="CompanyName" :label="$t('i18nView.GonSiMingChen')">
-              <el-select v-model="form.CompanyName" placeholder="请选择" @change="supplierChange">
-                <el-option
-                  v-for="item in supplierList"
-                  :key="item.companyNo"
-                  :label="item.companyName"
-                  :value="item.companyNo"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="24">
-            <el-form-item prop="subcategory" :label="$t('i18nView.YiQiMingChen')">
+            <el-form-item prop="subcategory" :label="$t('i18nView.WuPinLeiXin')">
               <el-select v-model="form.subcategory" placeholder="请选择" @change="subcategoryChange">
                 <el-option
                   v-for="item in devicesList"
@@ -155,18 +128,28 @@
           </el-col>
 
           <el-col :span="24">
-            <el-form-item prop="ccserialno" :label="$t('i18nView.ChuCanBianHao')">
-              <el-input v-model.trim="form.ccserialno" placeholder="请输入" />
+            <el-form-item prop="devicename" :label="$t('i18nView.WuPinTeXin')">
+              <el-input v-model.trim="form.devicename" type="textarea" placeholder="请输入" />
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
+            <el-form-item prop="states" :label="$t('i18nView.CuCunShuXin')">
+              <el-checkbox-group v-model="form.states" :disabled="viewMode">
+                <el-checkbox :disabled="viewMode" value="1" label="可领用" />
+                <el-checkbox :disabled="viewMode" value="2" label="可借用" />
+                <el-checkbox :disabled="viewMode" value="3" label="可预约" />
+              </el-checkbox-group>
+            </el-form-item>
+          </el-col>
 
-            <el-col :span="6">
-              <el-form-item prop="model" :label="$t('i18nView.CaiGouShuLiang')">
-                <el-input-number v-model="form.num" :min="1" label="描述文字" @change="numbaerChange" />
-              </el-form-item>
-            </el-col>
+          <el-col :span="24">
+            <el-form-item prop="devicename" :label="$t('i18nView.CunFanWeiZhi')">
+              <el-input v-model.trim="form.devicename" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
 
             <el-col :span="8">
               <el-form-item prop="unit" :label="$t('i18nView.DanWei')">
@@ -176,38 +159,13 @@
           </el-col>
 
           <el-col :span="24">
-            <el-form-item prop="unit" :label="$t('i18nView.DanWeiJiaGe')">
-              <el-input v-model.number="form.unitprice" type="number" placeholder="请输入" @change="numbaerChange" />
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="24">
             <el-form-item prop="model" :label="$t('i18nView.ZongJiaGe')">
               <el-input v-model.trim="form.sumprice" disabled placeholder="请输入" />
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
-            <el-form-item prop="purchsetime" :label="$t('i18nView.CaiGouShiJian')">
-              <el-date-picker
-                v-model="form.purchsetime"
-                type="datetime"
-                style="width: 265px;"
-                placeholder="选择日期时间"
-              /></el-form-item>
-          </el-col>
-
-          <el-col :span="24">
-            <el-form-item prop="yjtime" :label="$t('i18nView.YuJiSongDaShiJian')">
-              <el-date-picker
-                v-model="form.yjtime"
-                type="datetime"
-                style="width: 265px;"
-                placeholder="选择日期时间"
-              />
-            </el-form-item>
-          </el-col>
         </el-row>
+
       </el-form>
 
       <template slot="footer">
@@ -223,7 +181,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { getQueryZKPage, AddPurchase, getDetail, getModefiyDevice, getDevicesubcategory, getQueryList } from '@/api/api'
+import { getQueryZKPage, getAddDevice, getDetail, getModefiyDevice, getDevicesubcategory, getQueryList } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -259,39 +217,44 @@ export default {
       fullScreen: false,
       viewMode: false,
       rules: {
-        devicename: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        userID: [
+          { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ],
-        num: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ],
-        ccserialno: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        userName: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ],
-        subcategory: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        nickName: [
+          { required: true, message: '请输入用户昵称', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
-        unit: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        email: [
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
         ],
-        unitprice: [
-          { required: true, message: '请填写', trigger: 'blur' }
+        sex: [
+          { required: true, message: '请输入性别', trigger: 'blur' }
         ],
-        sumprice: [
-          { required: true, message: '请填写', trigger: 'blur' }
-        ],
-        CompanyNo: [
-          { required: true, message: '请填写', trigger: 'blur' }
-        ],
-        CompanyName: [
-          { required: true, message: '请填写', trigger: 'blur' }
-        ],
-        purchsetime: [
-          { required: true, trigger: 'blur' }
-        ],
-        yjtime: [
-          { required: true, trigger: 'blur' }
+        phone: [
+          { required: true, trigger: 'blur', validator: validPhone }
         ]
+
+      },
+      queryForm: {
+        name: '',
+        phone: '',
+        evilType: '', // 诈骗类型
+        warnSource: '', // 预警来源
+        victimLevel: '', // 风险等级
+        administerPoliceStation: '', // 管辖派出所
+        alertState: '', // 任务状态
+        startTime: '',
+        endTime: ''
       },
       form: {
         devicename: '',
@@ -304,20 +267,10 @@ export default {
         unitprice: '',
         sumprice: '',
         CompanyNo: '',
+        states: [],
         CompanyName: '',
         purchsetime: '',
         yjtime: ''
-      },
-      queryForm: {
-        name: '',
-        phone: '',
-        evilType: '', // 诈骗类型
-        warnSource: '', // 预警来源
-        victimLevel: '', // 风险等级
-        administerPoliceStation: '', // 管辖派出所
-        alertState: '', // 任务状态
-        startTime: '',
-        endTime: ''
       },
       supplierList: [],
       devicesList: []
@@ -333,7 +286,6 @@ export default {
         this.$store.dispatch('setLanguage', lang)
       }
     }
-
   },
   created() {
     if (!this.$i18n.getLocaleMessage('en')[viewName]) {
@@ -363,9 +315,6 @@ export default {
       const params = {
         pageIndex: page,
         pageSize: limit
-        // orderBy: 0,
-        // sort: ''
-        // queryText: ''
       }
       getQueryZKPage(params).then(response => {
         const { data, statusCode, message } = response
@@ -399,13 +348,20 @@ export default {
       this.dialogVisible = false
       this.$refs[formName].resetFields()
       this.form = {
-        userID: '', // 账号
-        password: '', // 密码
-        userName: '', // 姓名
-        email: '', // 邮箱
-        phone: '', // 电话
-        address: '', // 地址
-        sex: '' // 性别
+        devicename: '',
+        num: 1,
+        ccserialno: '',
+        // category:'仪器设备',
+        status: 1,
+        subcategory: '',
+        unit: '',
+        unitprice: '',
+        sumprice: '',
+        CompanyNo: '',
+        states: [],
+        CompanyName: '',
+        purchsetime: '',
+        yjtime: ''
       }
     },
 
@@ -413,11 +369,6 @@ export default {
     handleAdd() {
       this.formTitle = '添加'
       this.dialogVisible = true
-    },
-
-    // 搜索
-    handleSearch() {
-
     },
 
     // 编辑行数据
@@ -429,11 +380,10 @@ export default {
     },
 
     // 查看行数据
-    handleViewDetail(index, row) {
+    handleViewDetail(row) {
       this.formTitle = '查看'
-      // this.form = row
-      this.getInfo(row)
       this.viewMode = true
+      this.getInfo(row)
       this.dialogVisible = true
     },
 
@@ -458,15 +408,16 @@ export default {
         center: true,
         type: 'warning'
       }).then(() => {
-        getUsersDelete({ userIds: [row.userID] }).then(response => {
-          const { statusCode, message } = response
-          if (statusCode === 200) {
-            this.$message.success('删除成功')
-            this.refreshList()
-          } else {
-            this.$message.error(message)
-          }
-        })
+        // 退货
+        // getUsersDelete({ userIds: [row.userID] }).then(response => {
+        //   const { statusCode, message } = response
+        //   if (statusCode === 200) {
+        //     this.$message.success('删除成功')
+        //     this.refreshList()
+        //   } else {
+        //     this.$message.error(message)
+        //   }
+        // })
       }).catch(() => {
       })
     },
@@ -480,19 +431,15 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.formTitle === '添加') {
-            const params = {
-              ...this.form,
-              status: 1,
-              createtime: new Date(),
-              category: '仪器设备'
-            }
-            AddPurchase(params).then(response => {
-              console.log(response)
-              const { statusCode, message } = response
+            const params = this.form
+            getAddDevice(params).then(response => {
+              const { data, statusCode, message } = response
               if (statusCode === 200) {
-                this.$message.success('添加成功')
-                this.dialogVisible = false
-                this.refreshList()
+                if (data === 1) {
+                  this.$message.success('添加成功')
+                  this.dialogVisible = false
+                  this.refreshList()
+                }
               } else {
                 this.$message.error(message)
               }
@@ -519,24 +466,6 @@ export default {
       })
     },
 
-    handlEaudit() {
-      this.$confirm(`是否同意通过审核`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        console.log('通过')
-      }).catch(() => {
-      })
-    },
-
-    // 点击行触发，选中或不选中复选框
-    onRowClick(row, column, event) {
-      this.$refs.elTable.toggleRowSelection(row)
-    },
-
     numbaerChange() {
       if (this.form.unitprice != '') {
         this.form.sumprice = (this.form.unitprice * this.form.num)
@@ -554,14 +483,13 @@ export default {
       })
     },
 
-    subcategoryChange(e) {
-      // this.devicesList.map(item => {
-      //   if (item.value == e) {
-      //     console.log(item)
-      //     this.form.CompanyName = item.text
-      //     this.form.CompanyNo = item.value
-      //   }
-      // })
+    subcategoryChange() {
+
+    },
+
+    // 点击行触发，选中或不选中复选框
+    onRowClick(row, column, event) {
+      this.$refs.elTable.toggleRowSelection(row)
     }
   }
 }

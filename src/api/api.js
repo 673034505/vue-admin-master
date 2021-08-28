@@ -18,13 +18,27 @@ export const delMenus = (params) => getAction('/api/Menus/Delete', params) // �
 export const getUserMenus = (params) => getAction('/api/Menus/GetUserMenus', params) // 获取用户菜单菜单
 
 // 仪器管理
+
+export const AddPurchase = (params) => postAction('/api/Device/AddPurchase', params) // 新增采购单
+export const getQueryList = (params) => postAction('/api/Company/QueryList', params) // 查询供应商公司列表，供应商下拉列表用
+
 export const getQueryZKPage = (params) => postAction('/api/Device/QueryZKPage', params) // 查询在库的设备（可借用）(分页列表)
+export const getAddDevice = (params) => postAction('/api/Device/AddDevice', params) // 查询在库的设备（可借用）(分页列表)
 export const getDevicesubcategory = (params) => getAction('/api/Device/GetDevicesubcategory', params) // 仪器子分类
+export const getModefiyDevice = (params) => postAction('/api/Device/ModefiyDevice', params) // 仪器子分类
+export const getDetail = (params) => getAction('/api/Device/GetDetail', params) // 仪器子分类
 export const setLYDevice = (params) => postAction('/api/Device/LYDevice', params) // 领用仪器
 export const setJYDevice = (params) => postAction('/api/Device/JYDevice', params) // 借用仪器
 export const setYYDevice = (params) => postAction('/api/Device/YYDevice', params) // 预约仪器
 export const setBFDevice = (params) => postAction('/api/Device/BFDevice', params) // 报废仪器
 export const setGHDevice = (params) => postAction('/api/Device/GHDevice', params) // 归还仪器
+
+// 公司
+export const getCompanList = (params) => postAction('/api/Company/Query', params) // 查询角色定义
+export const getCompanInfo = (params) => getAction('/api/Company/Get', params) // 查询角色定义
+export const createCompan = (params) => postAction('/api/Company/Create', params) // 查询角色定义
+export const UpdateCompan = (params) => postAction('/api/Company/Update', params) // 查询角色定义
+export const DeleteCompan = (params) => postAction('/api/Company/Delete', params) // 查询角色定义
 
 // 用户角色
 export const getRolesList = (params) => postAction('/api/Roles/Query', params) // 查询角色定义列表
@@ -33,7 +47,7 @@ export const getRolesCreatee = (params) => postAction('/api/Roles/Create', param
 export const getRolesUpdate = (params) => postAction('/api/Roles/Update', params) // 更新角色定义
 export const getRolesDelet = (params) => getAction('/api/Roles/Delete', params) // 删除角色定义
 
-// 用户角色
+// 用户角色定义
 export const getRolesUser = (params) => getAction('/api/RoleUsers/Get', params) // 查询角色定义
 export const getRolesUserCreate = (params) => postAction('/api/RoleUsers/Create', params) // 查询角色定义列表
 export const getRolesUserDelete = (params) => postAction('/api/RoleUsers/Delete', params) // 查询角色定义列表
