@@ -21,16 +21,27 @@ export const getUserMenus = (params) => getAction('/api/Menus/GetUserMenus', par
 
 export const AddPurchase = (params) => postAction('/api/Device/AddPurchase', params) // 新增采购单
 export const getQueryList = (params) => postAction('/api/Company/QueryList', params) // 查询供应商公司列表，供应商下拉列表用
+export const QueryPurchasPage = (params) => postAction('/api/Device/QueryPurchasPage', params) // 查询采购单列表(分页列表)
+export const GetPurchaseDetail = (params) => getAction('/api/Device/GetPurchaseDetail', params) // 详情id
+export const ModifyPurchase = (params) => postAction('/api/Device/ModifyPurchase', params) // 修改信息
+export const DeletePurchase = (params) => postAction('/api/Device/DeletePurchase', params) // 退货
+
+// 入库
+export const AddDevice = (params) => postAction('/api/Device/AddDevice', params) // 入库
 
 export const getQueryZKPage = (params) => postAction('/api/Device/QueryZKPage', params) // 查询在库的设备（可借用）(分页列表)
 export const getAddDevice = (params) => postAction('/api/Device/AddDevice', params) // 查询在库的设备（可借用）(分页列表)
 export const getDevicesubcategory = (params) => getAction('/api/Device/GetDevicesubcategory', params) // 仪器子分类
 export const getModefiyDevice = (params) => postAction('/api/Device/ModefiyDevice', params) // 仪器子分类
 export const getDetail = (params) => getAction('/api/Device/GetDetail', params) // 仪器子分类
+// 出库
 export const setLYDevice = (params) => postAction('/api/Device/LYDevice', params) // 领用仪器
 export const setJYDevice = (params) => postAction('/api/Device/JYDevice', params) // 借用仪器
 export const setYYDevice = (params) => postAction('/api/Device/YYDevice', params) // 预约仪器
 export const setBFDevice = (params) => postAction('/api/Device/BFDevice', params) // 报废仪器
+// 归还
+
+export const QueryGHPage = (params) => postAction('/api/Device/QueryGHPage', params) // 归还仪器
 export const setGHDevice = (params) => postAction('/api/Device/GHDevice', params) // 归还仪器
 
 // 公司

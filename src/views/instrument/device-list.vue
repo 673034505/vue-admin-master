@@ -57,15 +57,6 @@
           <el-button
             :size="formSize"
             type="text"
-            icon="el-icon-search"
-            class="-my-1"
-            @click="handleViewDetail(scope.row)"
-          >
-            <span class="text-sm"> 详情 </span>
-          </el-button>
-          <el-button
-            :size="formSize"
-            type="text"
             icon="el-icon-sold-out"
             class="-my-1"
             @click="handlCollect(scope.$index, scope.row)"
@@ -135,14 +126,14 @@
       width="800px"
       :close-on-click-modal="false"
       :fullscreen="fullScreen"
-      @closed="handleClose('alertForm')"
+      @closed="handleClose('form')"
     >
       <template v-if="formTitle =='查看'">
         <el-form
-          ref="alertForm"
+          ref="form"
           label-width="110px"
           :size="formSize"
-          :model="alertForm"
+          :model="form"
           class="stripe"
           :hide-required-asterisk="viewMode"
           :show-message="!viewMode"
@@ -154,32 +145,32 @@
           <el-row :gutter="10">
             <el-col :span="24">
               <el-form-item prop="devicename" label="物品名称">
-                <el-input v-model.trim="alertForm.devicename" placeholder="请输入用户姓名" />
+                <el-input v-model.trim="form.devicename" placeholder="请输入用户姓名" />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item prop="devicename" label="物品类别">
-                <el-input v-model.trim="alertForm.devicename" placeholder="请输入用户编号" />
+                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item prop="devicename" label="物品特征">
-                <el-input v-model.trim="alertForm.devicename" placeholder="请输入用户编号" />
+                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item prop="devicename" label="采购人">
-                <el-input v-model.trim="alertForm.devicename" placeholder="请输入用户编号" />
+                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item prop="devicename" label="采购日期">
                 <el-date-picker
-                  v-model="alertForm.datetime"
+                  v-model="form.datetime"
                   type="datetime"
                   style="width: 265px;"
                   placeholder="选择日期时间"
@@ -189,7 +180,7 @@
             <el-col :span="24">
               <el-form-item prop="devicename" label="预计到达时间">
                 <el-date-picker
-                  v-model="alertForm.datetime"
+                  v-model="form.datetime"
                   type="datetime"
                   style="width: 265px;"
                   placeholder="选择日期时间"
@@ -202,19 +193,19 @@
           <el-row :gutter="10">
             <el-col :span="24">
               <el-form-item prop="model" label="数量">
-                <el-input-number v-model="alertForm.num" :min="1" label="描述文字" />
+                <el-input-number v-model="form.num" :min="1" label="描述文字" />
               </el-form-item>
             </el-col>
 
             <el-col :span="24">
               <el-form-item prop="model" label="单价">
-                <el-input-number v-model="alertForm.unitNum" :min="1" label="描述文字" />
+                <el-input-number v-model="form.unitNum" :min="1" label="描述文字" />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item prop="model" label="总价">
-                <el-input v-model.trim="alertForm.sum" disabled placeholder="请输入用户编号" />
+                <el-input v-model.trim="form.sum" disabled placeholder="请输入用户编号" />
               </el-form-item>
             </el-col>
 
@@ -225,7 +216,7 @@
 
       <template v-if="formTitle == '借用' || formTitle == '领用'|| formTitle == '预约' || formTitle == '报废' ">
         <el-form
-          ref="alertForm"
+          ref="form"
           label-width="110px"
           :size="formSize"
           :model="form"
@@ -239,21 +230,15 @@
           <el-row :gutter="10">
             <template v-if="formTitle == '借用'">
               <el-col :span="24">
-                <el-form-item prop="devicename" label="借用人">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
+                <el-form-item prop="Usenotes" label="用途">
+                  <el-input v-model.trim="form.Usenotes" placeholder="请输入" />
                 </el-form-item>
               </el-col>
 
               <el-col :span="24">
-                <el-form-item prop="devicename" label="用途">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="预计归还时间 ">
+                <el-form-item prop="endtime" label="预计归还时间 ">
                   <el-date-picker
-                    v-model="form.time"
+                    v-model="form.endtime"
                     type="datetime"
                     placeholder="选择日期时间"
                   />
@@ -263,67 +248,55 @@
 
             <template v-if="formTitle == '领用'">
               <el-col :span="24">
-                <el-form-item prop="devicename" label="领用人">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="用途">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="备注">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
+                <el-form-item prop="Usenotes" label="用途">
+                  <el-input v-model.trim="form.Usenotes" placeholder="请输入" />
                 </el-form-item>
               </el-col>
             </template>
 
             <template v-if="formTitle == '预约'">
               <el-col :span="24">
-                <el-form-item prop="devicename" label="预约人">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
+                <el-form-item prop="Usenotes" label="用途">
+                  <el-input v-model.trim="form.Usenotes" placeholder="请输入" />
                 </el-form-item>
               </el-col>
 
               <el-col :span="24">
-                <el-form-item prop="devicename" label="用途">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="预约时间 ">
+                <el-form-item prop="starttime" label="预约开始时间 ">
                   <el-date-picker
-                    v-model="form.time"
-                    type="datetimerange"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    :default-time="['12:00:00']"
+                    v-model="form.starttime"
+                    placeholder="选择日期时间"
+                    type="datetime"
+                  />
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="24">
+                <el-form-item prop="endtime" label="预约结束时间 ">
+                  <el-date-picker
+                    v-model="form.endtime"
+                    placeholder="选择日期时间"
+                    type="datetime"
                   />
                 </el-form-item>
               </el-col>
             </template>
 
             <template v-if="formTitle == '报废'">
+
               <el-col :span="24">
-                <el-form-item prop="devicename" label="报废时间 ">
+                <el-form-item prop="starttime" label="报废时间 ">
                   <el-date-picker
-                    v-model="form.time"
-                    type="datetime"
+                    v-model="form.starttime"
                     placeholder="选择日期时间"
+                    type="datetime"
                   />
-                </el-form-item>
-              </el-col>
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="报废物品">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
                 </el-form-item>
               </el-col>
 
               <el-col :span="24">
-                <el-form-item prop="devicename" label="报废原因">
-                  <el-input v-model="form.devicename" autosize type="textarea" placeholder="请输入借用人姓名" />
+                <el-form-item prop="Usenotes" label="报废原因">
+                  <el-input v-model.trim="form.Usenotes" placeholder="请输入" />
                 </el-form-item>
               </el-col>
 
@@ -336,8 +309,8 @@
 
       <template slot="footer">
         <div class="text-center">
-          <el-button :size="formSize" @click="handleClose('alertForm')">{{ viewMode ? '关 闭' : '取 消' }}</el-button>
-          <el-button v-show="!viewMode" type="primary" :size="formSize" @click="handleSubmitForm('alertForm')">确 定</el-button>
+          <el-button :size="formSize" @click="handleClose('form')">{{ viewMode ? '关 闭' : '取 消' }}</el-button>
+          <el-button v-show="!viewMode" type="primary" :size="formSize" @click="handleSubmitForm('form')">确 定</el-button>
         </div>
       </template>
 
@@ -347,7 +320,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { getQueryZKPage, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice, getQueryList } from '@/api/api'
+import { getDevicesubcategory, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice, getQueryList } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -384,17 +357,14 @@ export default {
       fullScreen: false,
       viewMode: false,
       rules: {
-        userID: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        Usenotes: [
+          { required: true, message: '请输入', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        starttime: [
+          { required: true, message: '请输入', trigger: 'blur' }
         ],
-        userName: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        endtime: [
+          { required: true, message: '请输入', trigger: 'blur' }
         ],
         nickName: [
           { required: true, message: '请输入用户昵称', trigger: 'blur' },
@@ -423,18 +393,13 @@ export default {
         startTime: '',
         endTime: ''
       },
-      alertForm: {
-        userID: 'liuranran', // 账号
-        password: '123456', // 密码
-        userName: '刘燃燃', // 姓名
-        email: '673034505@qq.com', // 邮箱
-        phone: '17671544839', // 电话
-        address: '', // 地址
-        sex: '男' // 性别
-      },
       form: {
+        Usenotes: '', // 用途
+        starttime: '', // 预计开始时间
+        endtime: '' // 预计归还时间  预约结束时间
 
-      }
+      },
+      id: ''
     }
   },
   computed: {
@@ -468,12 +433,12 @@ export default {
         // sort: ''
         // queryText: ''
       }
-      getQueryZKPage(params).then(response => {
+      getDevicesubcategory(params).then(response => {
         const { data, statusCode, message } = response
         this.listLoading = false
         if (statusCode === 200) {
-          this.list = data.dataSource
-          this.tableTotalCount = data.totalCount
+          this.list = data
+          // this.tableTotalCount = data.totalCount
         } else {
           this.$message.error(message)
         }
@@ -483,86 +448,28 @@ export default {
     // 领用仪器
     handlCollect(index, row) {
       this.formTitle = '领用'
-      // this.alertForm = row
+      this.id = row.id
       this.dialogVisible = true
-
-      return
-      this.$confirm(`${this.$t('i18nView.InstrumentWant')}`, `${this.$t('i18nView.Tips')}`, {
-        confirmButtonText: `${this.$t('i18nView.Determine')}`,
-        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        setLYDevice({ id: row.id }).then(response => {
-          const { statusCode } = response
-          if (statusCode == 200) {
-            this.$message.success(`${this.$t('i18nView.Claim')}${this.$t('i18nView.Success')}`)
-          } else {
-            this.$message.error(`${this.$t('i18nView.Claim')}${this.$t('i18nView.Error')}`)
-          }
-          this.refreshList()
-        })
-      }).catch(() => {
-      })
     },
 
     // 借用仪器
     handlBorrow(index, row) {
       this.formTitle = '借用'
-      // this.alertForm = row
+      this.id = row.id
       this.dialogVisible = true
-      return
-      this.$confirm(`${this.$t('i18nView.InstrumenBorrow')}`, `${this.$t('i18nView.Tips')}`, {
-        confirmButtonText: `${this.$t('i18nView.Determine')}`,
-        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        setJYDevice({ id: row.id }).then(response => {
-          const { statusCode } = response
-          if (statusCode == 200) {
-            this.$message.success(`${this.$t('i18nView.Borrow')}${this.$t('i18nView.Success')}`)
-          } else {
-            this.$message.error(`${this.$t('i18nView.Borrow')}${this.$t('i18nView.Error')}`)
-          }
-          this.refreshList()
-        })
-      }).catch(() => {
-      })
     },
 
     // 预约仪器
     handlReserve(index, row) {
       this.formTitle = '预约'
-      // this.alertForm = row
+      this.id = row.id
       this.dialogVisible = true
-      return
-      this.$confirm(`${this.$t('i18nView.InstrumenReserve')}`, `${this.$t('i18nView.Tips')}`, {
-        confirmButtonText: `${this.$t('i18nView.Determine')}`,
-        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        setYYDevice({ id: row.id }).then(response => {
-          const { statusCode } = response
-          if (statusCode == 200) {
-            this.$message.success(`${this.$t('i18nView.Reserve')}${this.$t('i18nView.Success')}`)
-          } else {
-            this.$message.error(`${this.$t('i18nView.Reserve')}${this.$t('i18nView.Error')}`)
-          }
-          this.refreshList()
-        })
-      }).catch(() => {
-      })
     },
 
     // 归还仪器
     handlReturn(index, row) {
       this.formTitle = '归还'
-      // this.alertForm = row
+      this.id = row.id
       this.dialogVisible = true
       return
       this.$confirm(`${this.$t('i18nView.InstrumenReturn')}`, `${this.$t('i18nView.Tips')}`, {
@@ -588,30 +495,18 @@ export default {
     // 报废仪器
     handlScrap(index, row) {
       this.formTitle = '报废'
-      // this.alertForm = row
+      this.id = row.id
       this.dialogVisible = true
-      return
-      this.$confirm(`${this.$t('i18nView.InstrumenScrap')}`, `${this.$t('i18nView.Tips')}`, {
-        confirmButtonText: `${this.$t('i18nView.Determine')}`,
-        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        setBFDevice({ id: row.id }).then(response => {
-          const { statusCode } = response
-          if (statusCode == 200) {
-            this.$message.success(`${this.$t('i18nView.Scrap')}${this.$t('i18nView.Success')}`)
-          } else {
-            this.$message.error(`${this.$t('i18nView.Scrap')}${this.$t('i18nView.Error')}`)
-          }
-          this.refreshList()
-        })
-      }).catch(() => {
-      })
     },
 
     refreshList() {
+      this.dialogVisible = false
+      this.form = {
+        Usenotes: '', // 用途
+        starttime: '', // 预计开始时间
+        endtime: '' // 预计归还时间  预约结束时间
+
+      }
       this.getList()
     },
 
@@ -642,7 +537,7 @@ export default {
       this.fullScreen = false
       this.dialogVisible = false
       this.$refs[formName].resetFields()
-      this.alertForm = {
+      this.form = {
         userID: '', // 账号
         password: '', // 密码
         userName: '', // 姓名
@@ -662,7 +557,7 @@ export default {
     // 编辑行数据
     handleEdit(row) {
       this.formTitle = '编辑'
-      // this.alertForm = row
+      // this.form = row
       this.getInfo(row)
       this.dialogVisible = true
     },
@@ -677,12 +572,12 @@ export default {
 
     // 获取用户信息
     getInfo(row) {
-      // this.alertForm = row
+      // this.form = row
       const params = { id: row.userID }
       getDetail(params).then(response => {
         const { data, statusCode } = response
         if (statusCode === 200) {
-          this.alertForm = data
+          this.form = data
         }
       })
     },
@@ -717,33 +612,45 @@ export default {
     handleSubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.formTitle === '添加') {
-            const params = this.alertForm
-            getUsersCreate(params).then(response => {
-              const { data, statusCode, message } = response
+          if (this.formTitle === '领用') {
+            setLYDevice({ id: this.id, Usenotes: this.form.Usenotes }).then(response => {
+              const { statusCode } = response
               if (statusCode === 200) {
-                if (data === 1) {
-                  this.$message.success('添加成功')
-                  this.dialogVisible = false
-                  this.refreshList()
-                }
+                this.$message.success(`${this.$t('i18nView.Claim')}${this.$t('i18nView.Success')}`)
               } else {
-                this.$message.error(message)
+                this.$message.error(`${this.$t('i18nView.Claim')}${this.$t('i18nView.Error')}`)
               }
+              this.refreshList()
             })
-          } else {
-            const params = this.alertForm
-            getUsersUpdate(params).then(response => {
-              const { data, statusCode, message } = response
-              if (statusCode === 200) {
-                if (data === 1) {
-                  this.$message.success('修改成功')
-                  this.dialogVisible = false
-                  this.refreshList()
-                }
+          } else if (this.formTitle === '借用') {
+            setJYDevice({ id: this.id, Usenotes: this.form.Usenotes, endtime: this.form.endtime }).then(response => {
+              const { statusCode } = response
+              if (statusCode == 200) {
+                this.$message.success(`${this.$t('i18nView.Borrow')}${this.$t('i18nView.Success')}`)
               } else {
-                this.$message.error(message)
+                this.$message.error(`${this.$t('i18nView.Borrow')}${this.$t('i18nView.Error')}`)
               }
+              this.refreshList()
+            })
+          } else if (this.formTitle === '预约') {
+            setYYDevice({ id: this.id, Usenotes: this.form.Usenotes, starttime: this.form.starttime, endtime: this.form.endtime }).then(response => {
+              const { statusCode } = response
+              if (statusCode == 200) {
+                this.$message.success(`${this.$t('i18nView.Reserve')}${this.$t('i18nView.Success')}`)
+              } else {
+                this.$message.error(`${this.$t('i18nView.Reserve')}${this.$t('i18nView.Error')}`)
+              }
+              this.refreshList()
+            })
+          } else if (this.formTitle === '报废') {
+            setBFDevice({ id: this.id, Usenotes: this.form.Usenotes, starttime: this.form.starttime }).then(response => {
+              const { statusCode } = response
+              if (statusCode == 200) {
+                this.$message.success(`${this.$t('i18nView.Scrap')}${this.$t('i18nView.Success')}`)
+              } else {
+                this.$message.error(`${this.$t('i18nView.Scrap')}${this.$t('i18nView.Error')}`)
+              }
+              this.refreshList()
             })
           }
         } else {

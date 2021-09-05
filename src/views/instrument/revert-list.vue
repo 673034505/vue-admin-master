@@ -242,7 +242,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { getQueryZKPage, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice } from '@/api/api'
+import { QueryGHPage, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -363,7 +363,7 @@ export default {
         // sort: ''
         // queryText: ''
       }
-      getQueryZKPage(params).then(response => {
+      QueryGHPage(params).then(response => {
         const { data, statusCode, message } = response
         this.listLoading = false
         if (statusCode === 200) {

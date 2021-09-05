@@ -1,15 +1,20 @@
 <template>
   <el-main>
     <!-- 搜索 -->
-    <el-form :inline="true" :model="listQuery">
-      <el-form-item :label="$t('i18nView.ChuCanBianHao')">
-        <el-input v-model="listQuery.name" placeholder="请输入内容" />
-      </el-form-item>
+    <el-form :inline="true" :model="queryForm">
       <el-form-item :label="$t('i18nView.WuPinMingChen')">
-        <el-input v-model="listQuery.name" placeholder="请输入内容" />
+        <el-input v-model="queryForm.devicename" placeholder="请输入内容" />
       </el-form-item>
       <el-form-item :label="$t('i18nView.WuPinLeiBie')">
-        <el-input v-model="listQuery.name" placeholder="请输入内容" />
+        <!-- <el-input v-model="queryForm.name" placeholder="请输入内容" /> -->
+        <el-select v-model="queryForm.subcategory" clearable placeholder="请选择">
+          <el-option
+            v-for="item in devicesList"
+            :key="item.value"
+            :label="item.text"
+            :value="item.text"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleSearch"> {{ $t('i18nView.Search') }} </el-button>
@@ -29,14 +34,14 @@
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
       <!-- <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" /> -->
       <el-table-column prop="serialno" :label="$t('i18nView.CaiGouBianHao')" align="center" show-overflow-tooltip />
-      <el-table-column prop="subcategoryName" :label="$t('i18nView.WuPinMingChen')" align="center" show-overflow-tooltip />
-      <el-table-column prop="model" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
-      <el-table-column prop="adminname" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
+      <el-table-column prop="devicename" :label="$t('i18nView.WuPinMingChen')" align="center" show-overflow-tooltip />
+      <el-table-column prop="ccserialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
+      <el-table-column prop="num" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
       <el-table-column prop="statusName" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
+      <el-table-column prop="companyName" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
       <el-table-column prop="supplytime" :label="$t('i18nView.ZhuanHuan')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="sumprice" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
 
       <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="280">
         <template slot-scope="scope">
@@ -129,8 +134,8 @@
           </el-col>
 
           <el-col :span="24">
-            <el-form-item prop="CompanyName" :label="$t('i18nView.GonSiMingChen')">
-              <el-select v-model="form.CompanyName" placeholder="请选择" @change="supplierChange">
+            <el-form-item prop="companyNo" :label="$t('i18nView.GonSiMingChen')">
+              <el-select v-model="form.companyNo" placeholder="请选择" @change="supplierChange">
                 <el-option
                   v-for="item in supplierList"
                   :key="item.companyNo"
@@ -223,7 +228,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { getQueryZKPage, AddPurchase, getDetail, getModefiyDevice, getDevicesubcategory, getQueryList } from '@/api/api'
+import { QueryPurchasPage, AddPurchase, getDetail, getModefiyDevice, getDevicesubcategory, getQueryList, GetPurchaseDetail, ModifyPurchase, DeletePurchase } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -241,10 +246,6 @@ export default {
   components: { Pagination },
   data() {
     return {
-      listQuery: {
-        userName: ''
-
-      },
       page: 1,
       limit: 10,
       tableTotalCount: 0,
@@ -309,15 +310,8 @@ export default {
         yjtime: ''
       },
       queryForm: {
-        name: '',
-        phone: '',
-        evilType: '', // 诈骗类型
-        warnSource: '', // 预警来源
-        victimLevel: '', // 风险等级
-        administerPoliceStation: '', // 管辖派出所
-        alertState: '', // 任务状态
-        startTime: '',
-        endTime: ''
+        devicename: '',
+        subcategory: ''
       },
       supplierList: [],
       devicesList: []
@@ -353,6 +347,7 @@ export default {
 
       getQueryList({ queryText: '' }).then(response => {
         const { data, statusCode, message } = response
+        console.log(data, '===')
         this.supplierList = data
       })
     },
@@ -362,12 +357,15 @@ export default {
       const { limit, page } = this
       const params = {
         pageIndex: page,
-        pageSize: limit
+        pageSize: limit,
+        devicename: this.queryForm.devicename,
+        subcategory: this.queryForm.subcategory
         // orderBy: 0,
         // sort: ''
         // queryText: ''
       }
-      getQueryZKPage(params).then(response => {
+      QueryPurchasPage(params).then(response => {
+        console.log(response)
         const { data, statusCode, message } = response
         this.listLoading = false
         if (statusCode === 200) {
@@ -417,7 +415,8 @@ export default {
 
     // 搜索
     handleSearch() {
-
+      // console.log(this.queryForm)
+      this.refreshList()
     },
 
     // 编辑行数据
@@ -441,24 +440,26 @@ export default {
     getInfo(row) {
       // this.form = row
       const params = { id: row.id }
-      getDetail(params).then(response => {
+      GetPurchaseDetail(params).then(response => {
         const { data, statusCode } = response
         if (statusCode === 200) {
+          console.log(data)
           this.form = data
+          // this.form.companyNo =
         }
       })
     },
 
     // 删除
     handleDelete(row) {
-      this.$confirm(`是否删除 ${row.userName}  等信息`, '提示', {
+      this.$confirm(`是否删除 ${row.devicename} 设备`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         dangerouslyUseHTMLString: true,
         center: true,
         type: 'warning'
       }).then(() => {
-        getUsersDelete({ userIds: [row.userID] }).then(response => {
+        DeletePurchase({ id: row.id }).then(response => {
           const { statusCode, message } = response
           if (statusCode === 200) {
             this.$message.success('删除成功')
@@ -498,8 +499,9 @@ export default {
               }
             })
           } else {
+            // const params = {...this.form,sumprice:this.form.}
             const params = this.form
-            getModefiyDevice(params).then(response => {
+            ModifyPurchase(params).then(response => {
               const { data, statusCode, message } = response
               if (statusCode === 200) {
                 if (data === 1) {

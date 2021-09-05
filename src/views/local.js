@@ -87,6 +87,14 @@ export default {
       WeiHuRen: '维护人',
 
       AddGongSi: '新增公司',
+      CaiGouDanId: '采购单Id',
+      ShiYongXuZhi: '使用须知',
+      FuZeRenXinMing: '负责人姓名',
+      ChuHuoShiJian: '出货时间',
+      DanWeiChengBen: '单位成本',
+      BaoCunXunZhi: '保存须知',
+      XingHao: '型号',
+      SheBeiChuBianHao: '设备处编号',
 
       // 基础数据
       Name: '姓名',
