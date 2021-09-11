@@ -186,7 +186,7 @@ export default {
       XianYouKuCun: '现有库存',
       CaiGouDanWei: '采购单位',
       ZhuanHuan: '转换',
-      DanWeiJiaGe: '单位价格',
+      DanWeiJiaGe: '单位价格', //
       ZongJiaGe: '总价格',
       ShenPi: '审批',
       WuPinXinXi: '物品信息',

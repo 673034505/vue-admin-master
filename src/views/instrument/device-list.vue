@@ -38,8 +38,8 @@
       <el-table-column prop="devicename" label="物品名称" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategoryName" label="物品类别" align="center" show-overflow-tooltip />
       <el-table-column prop="model" label="型号" align="center" show-overflow-tooltip />
-      <el-table-column prop="text" label="负责人姓名" align="center" show-overflow-tooltip />
-      <el-table-column prop="text" label="物品描述" align="center" show-overflow-tooltip />
+      <el-table-column prop="adminname" label="负责人姓名" align="center" show-overflow-tooltip />
+      <el-table-column prop="attrnotes" label="物品描述" align="center" show-overflow-tooltip />
       <!-- <el-table-column prop="text" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
       <el-table-column prop="value" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
       <el-table-column prop="type" :label="$t('i18nView.EquipmentType')" align="center" show-overflow-tooltip />
@@ -57,6 +57,16 @@
           <el-button
             :size="formSize"
             type="text"
+            icon="el-icon-search"
+            class="-my-1"
+            @click="handleViewDetail(scope.row)"
+          >
+            <span class="text-sm">详情 </span>
+          </el-button>
+          <el-button
+            v-if="scope.row.canly === 1"
+            :size="formSize"
+            type="text"
             icon="el-icon-sold-out"
             class="-my-1"
             @click="handlCollect(scope.$index, scope.row)"
@@ -72,8 +82,9 @@
           >
             <span class="text-sm">{{ $t('i18nView.Return') }}</span>
           </el-button> -->
+
           <el-button
-            v-if="!scope.row.issuedTime"
+            v-if="scope.row.canjy === 1"
             :size="formSize"
             type="text"
             icon="el-icon-s-claim"
@@ -83,7 +94,7 @@
             <span class="text-sm">{{ $t('i18nView.Borrow') }}</span>
           </el-button>
           <el-button
-            v-if="!scope.row.issuedTime"
+            v-if="scope.row.canyy === 1"
             :size="formSize"
             type="text"
             icon="el-icon-document-remove"
@@ -111,11 +122,11 @@
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :page.sync="page"
         :limit.sync="limit"
         :total="tableTotalCount"
-        @change="handleAppPageChange"
+        @pagination="getList"
       />
     </div>
 
@@ -140,77 +151,110 @@
           :disabled="viewMode"
           :rules="rules"
         >
-
-          <el-divider content-position="left"><b>商品信息</b></el-divider>
+          <el-divider content-position="left"><b>{{ $t('i18nView.WuPinXinXi') }}</b></el-divider>
           <el-row :gutter="10">
             <el-col :span="24">
-              <el-form-item prop="devicename" label="物品名称">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户姓名" />
+              <el-form-item prop="serialno" :label="$t('i18nView.WuPinBianHao')">
+                <el-input v-model.number="form.serialno" placeholder="请输入" />
               </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="物品类别">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="物品特征">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="采购人">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="采购日期">
-                <el-date-picker
-                  v-model="form.datetime"
-                  type="datetime"
-                  style="width: 265px;"
-                  placeholder="选择日期时间"
-                /></el-form-item>
             </el-col>
 
             <el-col :span="24">
-              <el-form-item prop="devicename" label="预计到达时间">
+              <el-form-item prop="devicename" :label="$t('i18nView.WuPinMingChen')">
+                <el-input v-model.number="form.devicename" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="position" :label="$t('i18nView.CunFanWeiZhi')">
+                <el-input v-model.trim="form.position" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="adminno" :label="$t('i18nView.FuZeRenXinMing')">
+                <el-select v-model="form.adminno" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in userList"
+                    :key="item.userID"
+                    :label="item.userName"
+                    :value="item.userID"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="supplytime" :label="$t('i18nView.ChuHuoShiJian')">
                 <el-date-picker
-                  v-model="form.datetime"
+                  v-model="form.supplytime"
                   type="datetime"
-                  style="width: 265px;"
                   placeholder="选择日期时间"
                 />
               </el-form-item>
             </el-col>
-          </el-row>
-          <!-- devicename -->
-          <el-divider content-position="left"><b>商品价格</b></el-divider>
-          <el-row :gutter="10">
+
             <el-col :span="24">
-              <el-form-item prop="model" label="数量">
-                <el-input-number v-model="form.num" :min="1" label="描述文字" />
+              <el-form-item prop="cost" :label="$t('i18nView.DanWeiChengBen')">
+                <el-input v-model.number="form.cost" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
             <el-col :span="24">
-              <el-form-item prop="model" label="单价">
-                <el-input-number v-model="form.unitNum" :min="1" label="描述文字" />
+              <el-form-item prop="position" :label="$t('i18nView.CunFanWeiZhi')">
+                <el-input v-model.trim="form.position" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
-            <el-col :span="12">
-              <el-form-item prop="model" label="总价">
-                <el-input v-model.trim="form.sum" disabled placeholder="请输入用户编号" />
+            <el-col :span="24">
+              <el-form-item prop="usenotes" :label="$t('i18nView.ShiYongXuZhi')">
+                <el-input v-model.trim="form.usenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="savenotes" :label="$t('i18nView.BaoCunXunZhi')">
+                <el-input v-model.trim="form.savenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="attrnotes" :label="$t('i18nView.WuPinTeXin')">
+                <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
+                <el-checkbox :disabled="viewMode" value="canly" label="可领用" />
+                <el-checkbox :disabled="viewMode" value="canjy" label="可借用" />
+                <el-checkbox :disabled="viewMode" value="canyy" label="可预约" />
+              </el-checkbox-group> -->
+                <el-input v-model.trim="form.attrnotes" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="canly" :label="$t('i18nView.CuCunShuXin')">
+                <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
+                <el-checkbox :disabled="viewMode" value="canly" label="可领用" />
+                <el-checkbox :disabled="viewMode" value="canjy" label="可借用" />
+                <el-checkbox :disabled="viewMode" value="canyy" label="可预约" />
+              </el-checkbox-group> -->
+                <el-checkbox :value="form.canly === 1 ? true:false">可领用</el-checkbox>
+                <el-checkbox :value="form.canjy === 1 ? true:false">可借用</el-checkbox>
+                <el-checkbox :value="form.canyy === 1 ? true:false">可预约</el-checkbox>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="model" :label="$t('i18nView.XingHao')">
+                <el-input v-model.trim="form.model" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="Sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
+                <el-input v-model.trim="form.Sbcserialno" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
           </el-row>
-
         </el-form>
       </template>
 
@@ -320,7 +364,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { getDevicesubcategory, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice, getQueryList } from '@/api/api'
+import { getQueryZKPage, getDevicesubcategory, getDetail, QueryTeacher, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice, getQueryList } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -394,11 +438,25 @@ export default {
         endTime: ''
       },
       form: {
-        Usenotes: '', // 用途
-        starttime: '', // 预计开始时间
-        endtime: '' // 预计归还时间  预约结束时间
-
+        purchaseid: '',
+        usenotes: '',
+        adminname: '',
+        adminno: '',
+        supplytime: '',
+        cost: '',
+        position: '',
+        savenotes: '',
+        attrnotes: '',
+        model: '',
+        Sbcserialno: '',
+        canyy: false,
+        canjy: false,
+        canly: false
       },
+      supplierList: [],
+      userList: [],
+      purchaseid: '',
+      devicesList: [],
       id: ''
     }
   },
@@ -418,27 +476,50 @@ export default {
       this.$i18n.mergeLocaleMessage('en', local.en)
       this.$i18n.mergeLocaleMessage('zh', local.zh)
     }
+    this.getDeviceList()
     this.getList()
   },
 
   methods: {
+    getDeviceList() {
+      getDevicesubcategory().then(response => {
+        const { data, statusCode, message } = response
+        this.devicesList = data
+      })
+
+      getQueryList({ queryText: '' }).then(response => {
+        const { data, statusCode, message } = response
+        this.supplierList = data
+      })
+
+      QueryTeacher().then(response => {
+        const { data, statusCode, message } = response
+        if (statusCode === 200) {
+          this.userList = data
+        } else {
+          this.$message.error(message)
+        }
+      })
+    },
     // 获取列表数据
     getList() {
       this.listLoading = true
       const { limit, page } = this
       const params = {
         pageIndex: page,
-        pageSize: limit
+        pageSize: limit,
+        orderBy: 'id',
+        sort: 'descending'
         // orderBy: 0,
         // sort: ''
         // queryText: ''
       }
-      getDevicesubcategory(params).then(response => {
+      getQueryZKPage(params).then(response => {
         const { data, statusCode, message } = response
         this.listLoading = false
         if (statusCode === 200) {
-          this.list = data
-          // this.tableTotalCount = data.totalCount
+          this.list = data.dataSource
+          this.tableTotalCount = data.totalCount
         } else {
           this.$message.error(message)
         }
@@ -471,25 +552,6 @@ export default {
       this.formTitle = '归还'
       this.id = row.id
       this.dialogVisible = true
-      return
-      this.$confirm(`${this.$t('i18nView.InstrumenReturn')}`, `${this.$t('i18nView.Tips')}`, {
-        confirmButtonText: `${this.$t('i18nView.Determine')}`,
-        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        setGHDevice({ id: row.id }).then(response => {
-          const { statusCode } = response
-          if (statusCode == 200) {
-            this.$message.success(`${this.$t('i18nView.Return')}${this.$t('i18nView.Success')}`)
-          } else {
-            this.$message.error(`${this.$t('i18nView.Return')}${this.$t('i18nView.Error')}`)
-          }
-          this.refreshList()
-        })
-      }).catch(() => {
-      })
     },
 
     // 报废仪器
@@ -538,13 +600,20 @@ export default {
       this.dialogVisible = false
       this.$refs[formName].resetFields()
       this.form = {
-        userID: '', // 账号
-        password: '', // 密码
-        userName: '', // 姓名
-        email: '', // 邮箱
-        phone: '', // 电话
-        address: '', // 地址
-        sex: '' // 性别
+        purchaseid: '',
+        usenotes: '',
+        adminname: '',
+        adminno: '',
+        supplytime: '',
+        cost: '',
+        position: '',
+        savenotes: '',
+        attrnotes: '',
+        model: '',
+        Sbcserialno: '',
+        canyy: false,
+        canjy: false,
+        canly: false
       }
     },
 
@@ -573,7 +642,7 @@ export default {
     // 获取用户信息
     getInfo(row) {
       // this.form = row
-      const params = { id: row.userID }
+      const params = { id: row.id }
       getDetail(params).then(response => {
         const { data, statusCode } = response
         if (statusCode === 200) {
@@ -591,15 +660,7 @@ export default {
         center: true,
         type: 'warning'
       }).then(() => {
-        getUsersDelete({ userIds: [row.userID] }).then(response => {
-          const { statusCode, message } = response
-          if (statusCode === 200) {
-            this.$message.success('删除成功')
-            this.refreshList()
-          } else {
-            this.$message.error(message)
-          }
-        })
+
       }).catch(() => {
       })
     },

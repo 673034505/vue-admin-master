@@ -220,7 +220,9 @@ export default {
       const { limit, page } = this
       const params = {
         pageIndex: page,
-        pageSize: limit
+        pageSize: limit,
+        orderBy: 'id',
+        sort: 'descending'
         // orderBy: 0,
         // sort: ''
         // queryText: ''

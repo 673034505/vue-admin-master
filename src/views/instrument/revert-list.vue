@@ -38,9 +38,9 @@
       <el-table-column prop="devicename" label="物品名称" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategoryName" label="物品类别" align="center" show-overflow-tooltip />
       <el-table-column prop="model" label="型号" align="center" show-overflow-tooltip />
-      <el-table-column prop="text" label="负责人姓名" align="center" show-overflow-tooltip />
-      <el-table-column prop="text" label="物品描述" align="center" show-overflow-tooltip />
-      <el-table-column prop="text" label="出库时间" align="center" show-overflow-tooltip />
+      <el-table-column prop="adminname" label="负责人姓名" align="center" show-overflow-tooltip />
+      <el-table-column prop="attrnotes" label="物品描述" align="center" show-overflow-tooltip />
+      <el-table-column prop="supplytime" label="出库时间" align="center" show-overflow-tooltip />
       <!-- <el-table-column prop="text" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
       <el-table-column prop="value" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
       <el-table-column prop="type" :label="$t('i18nView.EquipmentType')" align="center" show-overflow-tooltip />
@@ -99,6 +99,7 @@
       :fullscreen="fullScreen"
       @closed="handleClose('form')"
     >
+
       <template v-if="formTitle =='查看'">
         <el-form
           ref="form"
@@ -111,77 +112,109 @@
           :disabled="viewMode"
           :rules="rules"
         >
-
-          <el-divider content-position="left"><b>商品信息</b></el-divider>
+          <el-divider content-position="left"><b>{{ $t('i18nView.WuPinXinXi') }}</b></el-divider>
           <el-row :gutter="10">
             <el-col :span="24">
-              <el-form-item prop="devicename" label="物品名称">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户姓名" />
+              <el-form-item prop="serialno" :label="$t('i18nView.WuPinBianHao')">
+                <el-input v-model.number="form.serialno" placeholder="请输入" />
               </el-form-item>
             </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="物品类别">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
+            <el-col :span="24">
+              <el-form-item prop="devicename" :label="$t('i18nView.WuPinMingChen')">
+                <el-input v-model.number="form.devicename" placeholder="请输入" />
               </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="物品特征">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="采购人">
-                <el-input v-model.trim="form.devicename" placeholder="请输入用户编号" />
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="devicename" label="采购日期">
-                <el-date-picker
-                  v-model="form.datetime"
-                  type="datetime"
-                  style="width: 265px;"
-                  placeholder="选择日期时间"
-                /></el-form-item>
             </el-col>
 
             <el-col :span="24">
-              <el-form-item prop="devicename" label="预计到达时间">
+              <el-form-item prop="position" :label="$t('i18nView.CunFanWeiZhi')">
+                <el-input v-model.trim="form.position" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="adminno" :label="$t('i18nView.FuZeRenXinMing')">
+                <el-select v-model="form.adminno" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in userList"
+                    :key="item.userID"
+                    :label="item.userName"
+                    :value="item.userID"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="supplytime" :label="$t('i18nView.ChuHuoShiJian')">
                 <el-date-picker
-                  v-model="form.datetime"
+                  v-model="form.supplytime"
                   type="datetime"
-                  style="width: 265px;"
                   placeholder="选择日期时间"
                 />
               </el-form-item>
             </el-col>
-          </el-row>
-          <!-- devicename -->
-          <el-divider content-position="left"><b>商品价格</b></el-divider>
-          <el-row :gutter="10">
+
             <el-col :span="24">
-              <el-form-item prop="model" label="数量">
-                <el-input-number v-model="form.num" :min="1" label="描述文字" />
+              <el-form-item prop="cost" :label="$t('i18nView.DanWeiChengBen')">
+                <el-input v-model.number="form.cost" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
             <el-col :span="24">
-              <el-form-item prop="model" label="单价">
-                <el-input-number v-model="form.unitNum" :min="1" label="描述文字" />
+              <el-form-item prop="position" :label="$t('i18nView.CunFanWeiZhi')">
+                <el-input v-model.trim="form.position" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
-            <el-col :span="12">
-              <el-form-item prop="model" label="总价">
-                <el-input v-model.trim="form.sum" disabled placeholder="请输入用户编号" />
+            <el-col :span="24">
+              <el-form-item prop="usenotes" :label="$t('i18nView.ShiYongXuZhi')">
+                <el-input v-model.trim="form.usenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="savenotes" :label="$t('i18nView.BaoCunXunZhi')">
+                <el-input v-model.trim="form.savenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="attrnotes" :label="$t('i18nView.WuPinTeXin')">
+                <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
+                <el-checkbox :disabled="viewMode" value="canly" label="可领用" />
+                <el-checkbox :disabled="viewMode" value="canjy" label="可借用" />
+                <el-checkbox :disabled="viewMode" value="canyy" label="可预约" />
+              </el-checkbox-group> -->
+                <el-input v-model.trim="form.attrnotes" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="canly" :label="$t('i18nView.CuCunShuXin')">
+                <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
+                <el-checkbox :disabled="viewMode" value="canly" label="可领用" />
+                <el-checkbox :disabled="viewMode" value="canjy" label="可借用" />
+                <el-checkbox :disabled="viewMode" value="canyy" label="可预约" />
+              </el-checkbox-group> -->
+                <el-checkbox :value="form.canly === 1 ? true:false">可领用</el-checkbox>
+                <el-checkbox :value="form.canjy === 1 ? true:false">可借用</el-checkbox>
+                <el-checkbox :value="form.canyy === 1 ? true:false">可预约</el-checkbox>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="model" :label="$t('i18nView.XingHao')">
+                <el-input v-model.trim="form.model" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="Sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
+                <el-input v-model.trim="form.Sbcserialno" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
           </el-row>
-
         </el-form>
       </template>
 
@@ -202,23 +235,8 @@
 
             <template v-if="formTitle == '归还'">
               <el-col :span="24">
-                <el-form-item prop="devicename" label="归还时间 ">
-                  <el-date-picker
-                    v-model="form.time"
-                    type="datetime"
-                    placeholder="选择日期时间"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="归还品">
-                  <el-input v-model.trim="form.devicename" placeholder="请输入借用人姓名" />
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="24">
-                <el-form-item prop="devicename" label="归还原因">
-                  <el-input v-model="form.devicename" autosize type="textarea" placeholder="请输入借用人姓名" />
+                <el-form-item prop="Usenotes" label="归还说明">
+                  <el-input v-model="form.Usenotes" autosize type="textarea" placeholder="请输入" />
                 </el-form-item>
               </el-col>
 
@@ -242,7 +260,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { QueryGHPage, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice } from '@/api/api'
+import { QueryGHPage, getDevicesubcategory, getQueryList, QueryTeacher, getDetail, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -291,9 +309,8 @@ export default {
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ],
-        nickName: [
-          { required: true, message: '请输入用户昵称', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        Usenotes: [
+          { required: true, message: '请输入', trigger: 'blur' }
         ],
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -318,15 +335,11 @@ export default {
         startTime: '',
         endTime: ''
       },
-      form: {
-        userID: 'liuranran', // 账号
-        password: '123456', // 密码
-        userName: '刘燃燃', // 姓名
-        email: '673034505@qq.com', // 邮箱
-        phone: '17671544839', // 电话
-        address: '', // 地址
-        sex: '男' // 性别
-      },
+      supplierList: [],
+      userList: [],
+      purchaseid: '',
+      devicesList: [],
+      id: '',
       form: {
 
       }
@@ -348,6 +361,7 @@ export default {
       this.$i18n.mergeLocaleMessage('en', local.en)
       this.$i18n.mergeLocaleMessage('zh', local.zh)
     }
+    this.getDeviceList()
     this.getList()
   },
 
@@ -369,6 +383,27 @@ export default {
         if (statusCode === 200) {
           this.list = data.dataSource
           this.tableTotalCount = data.totalCount
+        } else {
+          this.$message.error(message)
+        }
+      })
+    },
+
+    getDeviceList() {
+      getDevicesubcategory().then(response => {
+        const { data, statusCode, message } = response
+        this.devicesList = data
+      })
+
+      getQueryList({ queryText: '' }).then(response => {
+        const { data, statusCode, message } = response
+        this.supplierList = data
+      })
+
+      QueryTeacher().then(response => {
+        const { data, statusCode, message } = response
+        if (statusCode === 200) {
+          this.userList = data
         } else {
           this.$message.error(message)
         }
@@ -458,26 +493,8 @@ export default {
     handlReturn(index, row) {
       this.formTitle = '归还'
       // this.form = row
+      this.id = row.id
       this.dialogVisible = true
-      return
-      this.$confirm(`${this.$t('i18nView.InstrumenReturn')}`, `${this.$t('i18nView.Tips')}`, {
-        confirmButtonText: `${this.$t('i18nView.Determine')}`,
-        cancelButtonText: `${this.$t('i18nView.Cancel')}`,
-        dangerouslyUseHTMLString: true,
-        center: true,
-        type: 'warning'
-      }).then(() => {
-        setGHDevice({ id: row.id }).then(response => {
-          const { statusCode } = response
-          if (statusCode == 200) {
-            this.$message.success(`${this.$t('i18nView.Return')}${this.$t('i18nView.Success')}`)
-          } else {
-            this.$message.error(`${this.$t('i18nView.Return')}${this.$t('i18nView.Error')}`)
-          }
-          this.refreshList()
-        })
-      }).catch(() => {
-      })
     },
 
     // 报废仪器
@@ -566,17 +583,17 @@ export default {
     handleViewDetail(row) {
       this.formTitle = '查看'
       this.viewMode = true
-      // this.getInfo(row)
-      setTimeout(() => {
-        this.form = row
-      }, 100)
+      this.getInfo(row)
+      // setTimeout(() => {
+      //   this.form = row
+      // }, 100)
       this.dialogVisible = true
     },
 
     // 获取用户信息
     getInfo(row) {
       // this.form = row
-      const params = { id: row.userID }
+      const params = { id: row.id }
       getDetail(params).then(response => {
         const { data, statusCode } = response
         if (statusCode === 200) {
@@ -615,35 +632,16 @@ export default {
     handleSubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.formTitle === '添加') {
-            const params = this.form
-            getUsersCreate(params).then(response => {
-              const { data, statusCode, message } = response
-              if (statusCode === 200) {
-                if (data === 1) {
-                  this.$message.success('添加成功')
-                  this.dialogVisible = false
-                  this.refreshList()
-                }
-              } else {
-                this.$message.error(message)
-              }
-            })
-          } else {
-            const params = this.form
-            getUsersUpdate(params).then(response => {
-              const { data, statusCode, message } = response
-              if (statusCode === 200) {
-                if (data === 1) {
-                  this.$message.success('修改成功')
-                  this.dialogVisible = false
-                  this.refreshList()
-                }
-              } else {
-                this.$message.error(message)
-              }
-            })
-          }
+          setGHDevice({ id: this.id, Usenotes: this.form.Usenotes }).then(response => {
+            const { statusCode } = response
+            if (statusCode == 200) {
+              this.dialogVisible = false
+              this.$message.success(`${this.$t('i18nView.Return')}${this.$t('i18nView.Success')}`)
+            } else {
+              this.$message.error(`${this.$t('i18nView.Return')}${this.$t('i18nView.Error')}`)
+            }
+            this.refreshList()
+          })
         } else {
           console.log('error submit!!')
           return false

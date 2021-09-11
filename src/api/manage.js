@@ -18,6 +18,15 @@ export function postAction(url, parameter) {
   })
 }
 
+// post
+export function postAction1(url, parameter) {
+  return request({
+    url: gateway + url,
+    method: 'post',
+    params: parameter
+  })
+}
+
 // post method= {post | put}
 export function httpAction(url, parameter, method) {
   return request({

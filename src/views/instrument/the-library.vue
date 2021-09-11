@@ -12,7 +12,7 @@
             v-for="item in devicesList"
             :key="item.value"
             :label="item.text"
-            :value="item.text"
+            :value="item.value"
           />
         </el-select>
       </el-form-item>
@@ -31,8 +31,17 @@
       @row-click="onRowClick"
     >
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
-      <!-- <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" /> -->
-      <!-- <el-table-column prop="serialno" :label="$t('i18nView.Number')" align="center" show-overflow-tooltip /> -->
+      <el-table-column prop="serialno" :label="$t('i18nView.CaiGouBianHao')" align="center" show-overflow-tooltip />
+      <el-table-column prop="devicename" :label="$t('i18nView.WuPinMingChen')" align="center" show-overflow-tooltip />
+      <el-table-column prop="ccserialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
+      <el-table-column prop="num" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
+      <el-table-column prop="nowNum" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.YiQiMingChen')" align="center" show-overflow-tooltip />
+      <el-table-column prop="companyName" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
+      <el-table-column prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="sumprice" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
+
+      <!--
       <el-table-column prop="serialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
       <el-table-column prop="devicename" :label="$t('i18nView.ItemName')" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategory" :label="$t('i18nView.WuPinLeiXin')" align="center" show-overflow-tooltip />
@@ -42,13 +51,8 @@
       <el-table-column prop="unit" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategoryName" :label="$t('i18nView.ZhuanHuan')" align="center" show-overflow-tooltip />
       <el-table-column prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
-      <el-table-column prop="sumprice" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="sumprice" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip /> -->
 
-      <!-- <el-table-column prop="subcategoryName" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
-      <el-table-column prop="model" :label="$t('i18nView.Model')" align="center" show-overflow-tooltip />
-      <el-table-column prop="adminname" :label="$t('i18nView.WarehousingTeacher')" align="center" show-overflow-tooltip />
-      <el-table-column prop="statusName" :label="$t('i18nView.InLibrary')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.UpdateTime')" align="center" show-overflow-tooltip /> -->
       <el-table-column align="center" fixed="right" :label="$t('i18nView.Operation')" width="280">
         <template slot-scope="scope">
           <el-button
@@ -91,11 +95,11 @@
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :page.sync="page"
         :limit.sync="limit"
         :total="tableTotalCount"
-        @change="handleAppPageChange"
+        @pagination="getList"
       />
     </div>
 
@@ -119,98 +123,191 @@
         :disabled="viewMode"
         :rules="rules"
       >
-        <el-divider content-position="left"><b>{{ $t('i18nView.WuPinXinXi') }}</b></el-divider>
-        <el-row :gutter="10">
-          <el-col :span="24">
-            <el-form-item prop="purchaseid" :label="$t('i18nView.CaiGouDanId')">
-              <el-input v-model.trim="form.purchaseid" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+        <template v-if="formTitle != '查看'">
+          <el-divider content-position="left"><b>{{ $t('i18nView.WuPinXinXi') }}</b></el-divider>
+          <el-row :gutter="10">
 
-          <el-col :span="24">
-            <el-form-item prop="usenotes" :label="$t('i18nView.ShiYongXuZhi')">
-              <el-input v-model.trim="form.usenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="adminno" :label="$t('i18nView.FuZeRenXinMing')">
+                <el-select v-model="form.adminno" filterable placeholder="请选择" @change="subcategoryChange">
+                  <el-option
+                    v-for="item in userList"
+                    :key="item.userID"
+                    :label="item.userName"
+                    :value="item.userID"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="subcategory" :label="$t('i18nView.FuZeRenXinMing')">
-              <el-select v-model="form.subcategory" placeholder="请选择" @change="subcategoryChange">
-                <el-option
-                  v-for="item in devicesList"
-                  :key="item.value"
-                  :label="item.text"
-                  :value="item.value"
+            <el-col :span="24">
+              <el-form-item prop="supplytime" :label="$t('i18nView.ChuHuoShiJian')">
+                <el-date-picker
+                  v-model="form.supplytime"
+                  type="datetime"
+                  placeholder="选择日期时间"
                 />
-              </el-select>
-            </el-form-item>
-          </el-col>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="supplytime" :label="$t('i18nView.ChuHuoShiJian')">
-              <el-date-picker
-                v-model="form.supplytime"
-                type="datetime"
-                placeholder="选择日期时间"
-              />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="cost" :label="$t('i18nView.DanWeiChengBen')">
+                <el-input v-model.number="form.cost" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="cost" :label="$t('i18nView.DanWeiChengBen')">
-              <el-input v-model.trim="form.cost" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="position" :label="$t('i18nView.CunFanWeiZhi')">
+                <el-input v-model.trim="form.position" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="position" :label="$t('i18nView.CunFanWeiZhi')">
-              <el-input v-model.trim="form.position" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="usenotes" :label="$t('i18nView.ShiYongXuZhi')">
+                <el-input v-model.trim="form.usenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="savenotes" :label="$t('i18nView.BaoCunXunZhi')">
-              <el-input v-model.trim="form.savenotes" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="savenotes" :label="$t('i18nView.BaoCunXunZhi')">
+                <el-input v-model.trim="form.savenotes" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" maxlength="200" show-word-limit placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="attrnotes" :label="$t('i18nView.WuPinTeXin')">
-              <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
+            <el-col :span="24">
+              <el-form-item prop="attrnotes" :label="$t('i18nView.WuPinTeXin')">
+                <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
                 <el-checkbox :disabled="viewMode" value="canly" label="可领用" />
                 <el-checkbox :disabled="viewMode" value="canjy" label="可借用" />
                 <el-checkbox :disabled="viewMode" value="canyy" label="可预约" />
               </el-checkbox-group> -->
-              <el-input v-model.trim="form.attrnotes" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+                <el-input v-model.trim="form.attrnotes" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="canly" :label="$t('i18nView.CuCunShuXin')">
-              <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
+            <el-col :span="24">
+              <el-form-item prop="canly" :label="$t('i18nView.CuCunShuXin')">
+                <!-- <el-checkbox-group v-model="form.attrnotes" :disabled="viewMode">
                 <el-checkbox :disabled="viewMode" value="canly" label="可领用" />
                 <el-checkbox :disabled="viewMode" value="canjy" label="可借用" />
                 <el-checkbox :disabled="viewMode" value="canyy" label="可预约" />
               </el-checkbox-group> -->
-              <el-checkbox v-model="form.canly">可领用</el-checkbox>
-              <el-checkbox v-model="form.canjy">可借用</el-checkbox>
-              <el-checkbox v-model="form.canyy">可预约</el-checkbox>
-            </el-form-item>
-          </el-col>
+                <el-checkbox v-model="form.canly">可领用</el-checkbox>
+                <el-checkbox v-model="form.canjy">可借用</el-checkbox>
+                <el-checkbox v-model="form.canyy">可预约</el-checkbox>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="model" :label="$t('i18nView.XingHao')">
-              <el-input v-model.trim="form.model" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="model" :label="$t('i18nView.XingHao')">
+                <el-input v-model.trim="form.model" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="24">
-            <el-form-item prop="Sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
-              <el-input v-model.trim="form.Sbcserialno" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
+            <el-col :span="24">
+              <el-form-item prop="Sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
+                <el-input v-model.trim="form.Sbcserialno" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
 
-        </el-row>
+          </el-row>
+        </template>
+
+        <template v-else>
+          <el-row :gutter="10">
+            <el-col :span="24">
+              <el-form-item prop="serialno" :label="$t('i18nView.CaiGouBianHao')">
+                <el-input v-model.trim="form.serialno" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="devicename" :label="$t('i18nView.WuPinMingChen')">
+                <el-input v-model.trim="form.devicename" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="companyNo" :label="$t('i18nView.GonSiMingChen')">
+                <el-select v-model="form.companyNo" placeholder="请选择" @change="supplierChange">
+                  <el-option
+                    v-for="item in supplierList"
+                    :key="item.companyNo"
+                    :label="item.companyName"
+                    :value="item.companyNo"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="subcategory" :label="$t('i18nView.YiQiMingChen')">
+                <el-select v-model="form.subcategory" placeholder="请选择" @change="subcategoryChange">
+                  <el-option
+                    v-for="item in devicesList"
+                    :key="item.value"
+                    :label="item.text"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="ccserialno" :label="$t('i18nView.ChuCanBianHao')">
+                <el-input v-model.trim="form.ccserialno" placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+
+              <el-col :span="6">
+                <el-form-item prop="num" :label="$t('i18nView.CaiGouShuLiang')">
+                  <el-input-number v-model="form.num" :min="1" label="描述文字" @change="numbaerChange" />
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="8">
+                <el-form-item prop="unit" :label="$t('i18nView.DanWei')">
+                  <el-input v-model.trim="form.unit" placeholder="请输入" />
+                </el-form-item>
+              </el-col>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')">
+                <el-input v-model.number="form.unitprice" type="number" placeholder="请输入" @change="numbaerChange" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="sumprice" :label="$t('i18nView.ZongJiaGe')">
+                <el-input v-model.trim="form.sumprice" disabled placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="12">
+              <el-form-item prop="purchsetime" :label="$t('i18nView.CaiGouShiJian')">
+                <el-date-picker
+                  v-model="form.purchsetime"
+                  type="datetime"
+                  style="width: 265px;"
+                  placeholder="选择日期时间"
+                /></el-form-item>
+            </el-col>
+
+            <el-col :span="24">
+              <el-form-item prop="yjtime" :label="$t('i18nView.YuJiSongDaShiJian')">
+                <el-date-picker
+                  v-model="form.yjtime"
+                  type="datetime"
+                  style="width: 265px;"
+                  placeholder="选择日期时间"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
 
       </el-form>
 
@@ -227,8 +324,9 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { QueryPurchasPage, getAddDevice, GetPurchaseDetail, DeletePurchase, getModefiyDevice, getDevicesubcategory, getQueryList, AddDevice } from '@/api/api'
+import { QueryRukuPage, QueryTeacher, getUsersQuery, GetPurchaseDetail, DeletePurchase, getModefiyDevice, getDevicesubcategory, getQueryList, AddDevice } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
+import cos from 'highlight.js/lib/languages/cos'
 const viewName = 'i18nView'
 // 自定义验证
 const validPhone = (rule, value, callback) => {
@@ -290,6 +388,9 @@ export default {
         model: [
           { required: true, message: '请填写', trigger: 'blur' }
         ],
+        adminno: [
+          { required: true, message: '请填写', trigger: 'blur' }
+        ],
         Sbcserialno: [
           { required: true, message: '请填写', trigger: 'blur' }
         ]
@@ -302,8 +403,8 @@ export default {
       form: {
         purchaseid: '',
         usenotes: '',
-        adminname: '刘燃燃',
-        adminno: '1',
+        adminname: '',
+        adminno: '',
         supplytime: '',
         cost: '',
         position: '',
@@ -317,6 +418,8 @@ export default {
 
       },
       supplierList: [],
+      userList: [],
+      purchaseid: '',
       devicesList: []
     }
   },
@@ -351,6 +454,15 @@ export default {
         const { data, statusCode, message } = response
         this.supplierList = data
       })
+
+      QueryTeacher().then(response => {
+        const { data, statusCode, message } = response
+        if (statusCode === 200) {
+          this.userList = data
+        } else {
+          this.$message.error(message)
+        }
+      })
     },
     // 获取列表数据
     getList() {
@@ -360,9 +472,11 @@ export default {
         pageIndex: page,
         pageSize: limit,
         devicename: this.queryForm.devicename,
-        subcategory: this.queryForm.subcategory
+        subcategory: this.queryForm.subcategory,
+        orderBy: 'id',
+        sort: 'descending'
       }
-      QueryPurchasPage(params).then(response => {
+      QueryRukuPage(params).then(response => {
         const { data, statusCode, message } = response
         this.listLoading = false
         if (statusCode === 200) {
@@ -394,20 +508,20 @@ export default {
       this.dialogVisible = false
       this.$refs[formName].resetFields()
       this.form = {
-        devicename: '',
-        num: 1,
-        ccserialno: '',
-        // category:'仪器设备',
-        status: 1,
-        subcategory: '',
-        unit: '',
-        unitprice: '',
-        sumprice: '',
-        CompanyNo: '',
-        states: [],
-        CompanyName: '',
-        purchsetime: '',
-        yjtime: ''
+        purchaseid: '',
+        usenotes: '',
+        adminname: '',
+        adminno: '',
+        supplytime: '',
+        cost: '',
+        position: '',
+        savenotes: '',
+        attrnotes: '',
+        model: '',
+        Sbcserialno: '',
+        canyy: false,
+        canjy: false,
+        canly: false
       }
     },
 
@@ -419,7 +533,8 @@ export default {
 
     // 编辑行数据
     handleEdit(row) {
-      this.formTitle = '编辑'
+      this.formTitle = '入库'
+      this.purchaseid = row.id
       // this.form = row
       // this.getInfo(row)
       this.dialogVisible = true
@@ -477,8 +592,16 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 入库
-          const params = this.form
-
+          // canyy: false,
+        // canjy: false,
+        // canly: false
+          const params = {
+            ...this.form,
+            purchaseid: this.purchaseid,
+            canyy: this.form.canyy ? 1 : 0,
+            canjy: this.form.canjy ? 1 : 0,
+            canly: this.form.canly ? 1 : 0
+          }
           AddDevice(params).then(response => {
             const { data, statusCode, message } = response
             if (statusCode === 200) {
@@ -486,6 +609,8 @@ export default {
                 this.$message.success('入库成功')
                 this.dialogVisible = false
                 this.refreshList()
+              } else {
+                this.$message.error('入库失败')
               }
             } else {
               this.$message.error(message)
@@ -515,8 +640,14 @@ export default {
       })
     },
 
-    subcategoryChange() {
-
+    subcategoryChange(e) {
+      console.log(e)
+      this.userList.map(item => {
+        if (item.userID === e) {
+          this.form.adminname = item.userName
+          this.form.adminno = item.userID
+        }
+      })
     },
 
     // 点击行触发，选中或不选中复选框

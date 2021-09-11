@@ -12,7 +12,7 @@
             v-for="item in devicesList"
             :key="item.value"
             :label="item.text"
-            :value="item.text"
+            :value="item.value"
           />
         </el-select>
       </el-form-item>
@@ -37,9 +37,9 @@
       <el-table-column prop="devicename" :label="$t('i18nView.WuPinMingChen')" align="center" show-overflow-tooltip />
       <el-table-column prop="ccserialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
       <el-table-column prop="num" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
-      <el-table-column prop="statusName" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
+      <el-table-column prop="nowNum" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
+      <el-table-column prop="subcategoryName" :label="$t('i18nView.YiQiMingChen')" align="center" show-overflow-tooltip />
       <el-table-column prop="companyName" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" :label="$t('i18nView.ZhuanHuan')" align="center" show-overflow-tooltip />
       <el-table-column prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
       <el-table-column prop="sumprice" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
 
@@ -97,11 +97,11 @@
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :page.sync="page"
         :limit.sync="limit"
         :total="tableTotalCount"
-        @change="handleAppPageChange"
+        @pagination="getList"
       />
     </div>
 
@@ -127,6 +127,12 @@
       >
         <el-divider content-position="left"><b>{{ $t('i18nView.WuPinXinXi') }}</b></el-divider>
         <el-row :gutter="10">
+          <el-col :span="24">
+            <el-form-item prop="serialno" :label="$t('i18nView.CaiGouBianHao')">
+              <el-input v-model.trim="form.serialno" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+
           <el-col :span="24">
             <el-form-item prop="devicename" :label="$t('i18nView.WuPinMingChen')">
               <el-input v-model.trim="form.devicename" placeholder="请输入" />
@@ -168,7 +174,7 @@
           <el-col :span="24">
 
             <el-col :span="6">
-              <el-form-item prop="model" :label="$t('i18nView.CaiGouShuLiang')">
+              <el-form-item prop="num" :label="$t('i18nView.CaiGouShuLiang')">
                 <el-input-number v-model="form.num" :min="1" label="描述文字" @change="numbaerChange" />
               </el-form-item>
             </el-col>
@@ -181,13 +187,13 @@
           </el-col>
 
           <el-col :span="24">
-            <el-form-item prop="unit" :label="$t('i18nView.DanWeiJiaGe')">
+            <el-form-item prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')">
               <el-input v-model.number="form.unitprice" type="number" placeholder="请输入" @change="numbaerChange" />
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
-            <el-form-item prop="model" :label="$t('i18nView.ZongJiaGe')">
+            <el-form-item prop="sumprice" :label="$t('i18nView.ZongJiaGe')">
               <el-input v-model.trim="form.sumprice" disabled placeholder="请输入" />
             </el-form-item>
           </el-col>
@@ -228,7 +234,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import local from '@/views/local'
-import { QueryPurchasPage, AddPurchase, getDetail, getModefiyDevice, getDevicesubcategory, getQueryList, GetPurchaseDetail, ModifyPurchase, DeletePurchase } from '@/api/api'
+import { QueryPurchasPage, AddPurchase, getDetail, ApprovePurchase, getDevicesubcategory, getQueryList, GetPurchaseDetail, ModifyPurchase, DeletePurchaseData } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
 const viewName = 'i18nView'
 // 自定义验证
@@ -267,7 +273,7 @@ export default {
           { required: true, message: '请填写', trigger: 'blur' }
         ],
         ccserialno: [
-          { required: true, message: '请填写', trigger: 'blur' }
+          { required: true, message: '请填写', trigger: 'change' }
         ],
         subcategory: [
           { required: true, message: '请填写', trigger: 'blur' }
@@ -276,15 +282,18 @@ export default {
           { required: true, message: '请填写', trigger: 'blur' }
         ],
         unitprice: [
-          { required: true, message: '请填写', trigger: 'blur' }
+          { required: true, message: '请填写', trigger: 'change' }
         ],
         sumprice: [
           { required: true, message: '请填写', trigger: 'blur' }
         ],
-        CompanyNo: [
+        serialno: [
           { required: true, message: '请填写', trigger: 'blur' }
         ],
-        CompanyName: [
+        companyNo: [
+          { required: true, message: '请填写', trigger: 'blur' }
+        ],
+        companyName: [
           { required: true, message: '请填写', trigger: 'blur' }
         ],
         purchsetime: [
@@ -298,14 +307,15 @@ export default {
         devicename: '',
         num: 1,
         ccserialno: '',
+        serialno: '',
         // category:'仪器设备',
         status: 1,
         subcategory: '',
         unit: '',
         unitprice: '',
         sumprice: '',
-        CompanyNo: '',
-        CompanyName: '',
+        companyNo: '',
+        companyName: '',
         purchsetime: '',
         yjtime: ''
       },
@@ -359,9 +369,9 @@ export default {
         pageIndex: page,
         pageSize: limit,
         devicename: this.queryForm.devicename,
-        subcategory: this.queryForm.subcategory
-        // orderBy: 0,
-        // sort: ''
+        subcategory: this.queryForm.subcategory,
+        orderBy: 'id',
+        sort: 'descending'
         // queryText: ''
       }
       QueryPurchasPage(params).then(response => {
@@ -397,13 +407,20 @@ export default {
       this.dialogVisible = false
       this.$refs[formName].resetFields()
       this.form = {
-        userID: '', // 账号
-        password: '', // 密码
-        userName: '', // 姓名
-        email: '', // 邮箱
-        phone: '', // 电话
-        address: '', // 地址
-        sex: '' // 性别
+        devicename: '',
+        num: 1,
+        ccserialno: '',
+        serialno: '',
+        // category:'仪器设备',
+        status: 1,
+        subcategory: '',
+        unit: '',
+        unitprice: '',
+        sumprice: '',
+        companyNo: '',
+        companyName: '',
+        purchsetime: '',
+        yjtime: ''
       }
     },
 
@@ -445,6 +462,7 @@ export default {
         if (statusCode === 200) {
           console.log(data)
           this.form = data
+          console.log(this.form)
           // this.form.companyNo =
         }
       })
@@ -459,21 +477,21 @@ export default {
         center: true,
         type: 'warning'
       }).then(() => {
-        DeletePurchase({ id: row.id }).then(response => {
-          const { statusCode, message } = response
+        DeletePurchaseData({ id: row.id }).then(response => {
+          const { statusCode, message, data } = response
           if (statusCode === 200) {
-            this.$message.success('删除成功')
-            this.refreshList()
+            if (data === 1) {
+              this.$message.success('删除成功')
+              this.refreshList()
+            } else {
+              this.$message.error('删除失败')
+            }
           } else {
             this.$message.error(message)
           }
         })
       }).catch(() => {
       })
-    },
-
-    handleAppPageChange(page) {
-      console.log(page)
     },
 
     // 提交表单
@@ -487,6 +505,7 @@ export default {
               createtime: new Date(),
               category: '仪器设备'
             }
+            console.log(params)
             AddPurchase(params).then(response => {
               console.log(response)
               const { statusCode, message } = response
@@ -500,7 +519,8 @@ export default {
             })
           } else {
             // const params = {...this.form,sumprice:this.form.}
-            const params = this.form
+            const params = { ...this.form }
+            console.log(params)
             ModifyPurchase(params).then(response => {
               const { data, statusCode, message } = response
               if (statusCode === 200) {
@@ -521,7 +541,7 @@ export default {
       })
     },
 
-    handlEaudit() {
+    handlEaudit(row) {
       this.$confirm(`是否同意通过审核`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -529,7 +549,16 @@ export default {
         center: true,
         type: 'warning'
       }).then(() => {
-        console.log('通过')
+        ApprovePurchase({ id: row.id }).then(response => {
+          console.log(response)
+          const { statusCode, message } = response
+          if (statusCode === 200) {
+            this.$message.success('审核通过')
+            this.refreshList()
+          } else {
+            this.$message.error(message)
+          }
+        })
       }).catch(() => {
       })
     },
@@ -540,6 +569,7 @@ export default {
     },
 
     numbaerChange() {
+      console.log(this.form.unitprice)
       if (this.form.unitprice != '') {
         this.form.sumprice = (this.form.unitprice * this.form.num)
       }
@@ -550,8 +580,8 @@ export default {
       this.supplierList.map(item => {
         if (item.companyNo == e) {
           console.log(item)
-          this.form.CompanyName = item.companyName
-          this.form.CompanyNo = item.companyNo
+          this.form.companyName = item.companyName
+          this.form.companyNo = item.companyNo
         }
       })
     },
@@ -560,8 +590,8 @@ export default {
       // this.devicesList.map(item => {
       //   if (item.value == e) {
       //     console.log(item)
-      //     this.form.CompanyName = item.text
-      //     this.form.CompanyNo = item.value
+      //     this.form.companyName = item.text
+      //     this.form.companyNo = item.value
       //   }
       // })
     }

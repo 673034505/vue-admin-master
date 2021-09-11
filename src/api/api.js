@@ -1,4 +1,4 @@
-import { getAction, deleteAction, putAction, postAction } from '@/api/manage'
+import { getAction, deleteAction, putAction, postAction1, postAction } from '@/api/manage'
 
 //* ******************************************************************************用户管理
 
@@ -24,10 +24,13 @@ export const getQueryList = (params) => postAction('/api/Company/QueryList', par
 export const QueryPurchasPage = (params) => postAction('/api/Device/QueryPurchasPage', params) // 查询采购单列表(分页列表)
 export const GetPurchaseDetail = (params) => getAction('/api/Device/GetPurchaseDetail', params) // 详情id
 export const ModifyPurchase = (params) => postAction('/api/Device/ModifyPurchase', params) // 修改信息
-export const DeletePurchase = (params) => postAction('/api/Device/DeletePurchase', params) // 退货
+export const DeletePurchase = (params) => postAction1('/api/Device/DeletePurchase', params) // 退货
+export const DeletePurchaseData = (params) => postAction1('/api/Device/DeletePurchaseData', params) // 删除采购单
+export const ApprovePurchase = (params) => postAction1('/api/Device/ApprovePurchase', params) // 审批
 
 // 入库
 export const AddDevice = (params) => postAction('/api/Device/AddDevice', params) // 入库
+export const QueryRukuPage = (params) => postAction('/api/Device/QueryRukuPage', params) // 入库
 
 export const getQueryZKPage = (params) => postAction('/api/Device/QueryZKPage', params) // 查询在库的设备（可借用）(分页列表)
 export const getAddDevice = (params) => postAction('/api/Device/AddDevice', params) // 查询在库的设备（可借用）(分页列表)
@@ -35,14 +38,14 @@ export const getDevicesubcategory = (params) => getAction('/api/Device/GetDevice
 export const getModefiyDevice = (params) => postAction('/api/Device/ModefiyDevice', params) // 仪器子分类
 export const getDetail = (params) => getAction('/api/Device/GetDetail', params) // 仪器子分类
 // 出库
-export const setLYDevice = (params) => postAction('/api/Device/LYDevice', params) // 领用仪器
-export const setJYDevice = (params) => postAction('/api/Device/JYDevice', params) // 借用仪器
-export const setYYDevice = (params) => postAction('/api/Device/YYDevice', params) // 预约仪器
-export const setBFDevice = (params) => postAction('/api/Device/BFDevice', params) // 报废仪器
+export const setLYDevice = (params) => postAction1('/api/Device/LYDevice', params) // 领用仪器
+export const setJYDevice = (params) => postAction1('/api/Device/JYDevice', params) // 借用仪器
+export const setYYDevice = (params) => postAction1('/api/Device/YYDevice', params) // 预约仪器
+export const setBFDevice = (params) => postAction1('/api/Device/BFDevice', params) // 报废仪器
 // 归还
 
 export const QueryGHPage = (params) => postAction('/api/Device/QueryGHPage', params) // 归还仪器
-export const setGHDevice = (params) => postAction('/api/Device/GHDevice', params) // 归还仪器
+export const setGHDevice = (params) => postAction1('/api/Device/GHDevice', params) // 归还仪器
 
 // 公司
 export const getCompanList = (params) => postAction('/api/Company/Query', params) // 查询角色定义
@@ -63,3 +66,8 @@ export const getRolesUser = (params) => getAction('/api/RoleUsers/Get', params) 
 export const getRolesUserCreate = (params) => postAction('/api/RoleUsers/Create', params) // 查询角色定义列表
 export const getRolesUserDelete = (params) => postAction('/api/RoleUsers/Delete', params) // 查询角色定义列表
 export const getRolesUserList = (params) => getAction('/api/RoleUsers/GetExcludeUsers', params) // 查询角色定义列表
+
+export const QueryTeacher = (params) => postAction('/api/users/QueryTeacher', params) // 查询角色定义列表
+
+// 日志
+export const QueryLog = (params) => postAction('/api/Logs/Query', params) // 查询角色定义列表

@@ -74,11 +74,11 @@
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :page.sync="page"
         :limit.sync="limit"
         :total="tableTotalCount"
-        @change="handleAppPageChange"
+        @pagination="getList"
       />
     </div>
 
@@ -302,7 +302,9 @@ export default {
       const { limit, page } = this
       const params = {
         pageIndex: page,
-        pageSize: limit
+        pageSize: limit,
+        orderBy: 'id',
+        sort: 'descending'
         // orderBy: 0,
         // sort: ''
         // queryText: ''
