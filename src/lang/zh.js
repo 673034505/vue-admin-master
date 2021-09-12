@@ -35,7 +35,7 @@ export default {
     Query: '查询',
     TueLog: '日志',
     InstrumentList: '仪器',
-    CompanyList: '公司',
+    CompanyList: '公司管理',
 
     deliveryManage: '出库管理',
     collectManage: '领用管理',

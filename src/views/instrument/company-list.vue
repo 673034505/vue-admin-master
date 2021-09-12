@@ -66,11 +66,11 @@
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :page.sync="page"
         :limit.sync="limit"
         :total="tableTotalCount"
-        @change="handleAppPageChange"
+        @pagination="getList"
       />
     </div>
 
@@ -145,7 +145,7 @@ const validPhone = (rule, value, callback) => {
   }
 }
 export default {
-  name: 'ExistDevice',
+  name: 'CompanyList',
   components: { Pagination },
   data() {
     return {
@@ -189,7 +189,7 @@ export default {
       form: {
         companyNo: '',
         companyName: '',
-        remark: '1',
+        remark: '',
         enable: 1
       }
     }

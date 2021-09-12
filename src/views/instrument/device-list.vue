@@ -34,7 +34,7 @@
     >
       <!-- <el-table-column sortable type="selection" width="55" align="center" /> -->
       <!-- <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" /> -->
-      <el-table-column prop="serialno" label="物品编号" align="center" show-overflow-tooltip />
+      <el-table-column sortable prop="serialno" label="物品编号" align="center" show-overflow-tooltip />
       <el-table-column prop="devicename" label="物品名称" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategoryName" label="物品类别" align="center" show-overflow-tooltip />
       <el-table-column prop="model" label="型号" align="center" show-overflow-tooltip />
@@ -61,7 +61,7 @@
             class="-my-1"
             @click="handleViewDetail(scope.row)"
           >
-            <span class="text-sm">详情 </span>
+            <span class="text-sm">{{ $t('i18nView.See') }} </span>
           </el-button>
           <el-button
             v-if="scope.row.canly === 1"
@@ -105,6 +105,7 @@
           </el-button>
 
           <el-button
+            v-if="rolesTeacher"
             :size="formSize"
             type="text"
             icon="el-icon-s-release"
@@ -249,8 +250,8 @@
             </el-col>
 
             <el-col :span="24">
-              <el-form-item prop="Sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
-                <el-input v-model.trim="form.Sbcserialno" placeholder="请输入" />
+              <el-form-item prop="sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
+                <el-input v-model.trim="form.sbcserialno" placeholder="请输入" />
               </el-form-item>
             </el-col>
 
@@ -366,6 +367,9 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import local from '@/views/local'
 import { getQueryZKPage, getDevicesubcategory, getDetail, QueryTeacher, setLYDevice, setJYDevice, setYYDevice, setBFDevice, setGHDevice, getQueryList } from '@/api/api'
 import { isvalidPhone } from '@/utils/validate'
+import store from '../../store'
+import { mapGetters } from 'vuex'
+// store.getters.addRouters
 const viewName = 'i18nView'
 // 自定义验证
 const validPhone = (rule, value, callback) => {
@@ -457,6 +461,8 @@ export default {
       userList: [],
       purchaseid: '',
       devicesList: [],
+      role: store.getters.roles,
+      roleFig: false,
       id: ''
     }
   },
@@ -469,7 +475,10 @@ export default {
         this.$i18n.locale = lang
         this.$store.dispatch('setLanguage', lang)
       }
-    }
+    },
+    ...mapGetters([
+      'rolesTeacher'
+    ])
   },
   created() {
     if (!this.$i18n.getLocaleMessage('en')[viewName]) {

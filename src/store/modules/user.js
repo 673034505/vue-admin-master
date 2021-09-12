@@ -11,6 +11,7 @@ const user = {
     name: '',
     avatar: '',
     roles: [],
+    rolesTeacher: false,
     isLock: getStore({
       name: 'isLock'
     }) || false,
@@ -33,6 +34,9 @@ const user = {
       state.avatar = avatar
     },
     SET_ROLES: (state, roles) => {
+      if (roles.indexOf('admin') >= 0 || roles.indexOf('teacher') >= 0) {
+        state.rolesTeacher = true
+      }
       state.roles = roles
     },
     SET_LOCK_PASSWD: (state, lockPasswd) => {

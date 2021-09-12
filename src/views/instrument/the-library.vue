@@ -31,15 +31,15 @@
       @row-click="onRowClick"
     >
       <!-- <el-table-column type="selection" width="50" align="center" fixed="left" /> -->
-      <el-table-column prop="serialno" :label="$t('i18nView.CaiGouBianHao')" align="center" show-overflow-tooltip />
+      <el-table-column prop="serialno" sortable :label="$t('i18nView.CaiGouBianHao')" align="center" show-overflow-tooltip />
       <el-table-column prop="devicename" :label="$t('i18nView.WuPinMingChen')" align="center" show-overflow-tooltip />
       <el-table-column prop="ccserialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
-      <el-table-column prop="num" :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
-      <el-table-column prop="nowNum" :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
+      <el-table-column prop="num" sortable :label="$t('i18nView.ShuLiang')" align="center" show-overflow-tooltip />
+      <el-table-column prop="nowNum" sortable :label="$t('i18nView.XianYouKuCun')" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategoryName" :label="$t('i18nView.YiQiMingChen')" align="center" show-overflow-tooltip />
       <el-table-column prop="companyName" :label="$t('i18nView.CaiGouDanWei')" align="center" show-overflow-tooltip />
-      <el-table-column prop="unitprice" :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
-      <el-table-column prop="sumprice" :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="unitprice" sortable :label="$t('i18nView.DanWeiJiaGe')" align="center" show-overflow-tooltip />
+      <el-table-column prop="sumprice" sortable :label="$t('i18nView.ZongJiaGe')" align="center" show-overflow-tooltip />
 
       <!--
       <el-table-column prop="serialno" :label="$t('i18nView.ChuCanBianHao')" align="center" show-overflow-tooltip />
@@ -63,7 +63,7 @@
             class="-my-1"
             @click="handleViewDetail(scope.row)"
           >
-            <span class="text-sm">详情 </span>
+            <span class="text-sm">{{ $t('i18nView.See') }} </span>
           </el-button>
           <el-button
             :size="formSize"
@@ -72,7 +72,7 @@
             class="-my-1"
             @click="handleEdit(scope.row)"
           >
-            <span class="text-sm">入库</span>
+            <span class="text-sm">{{ $t('i18nView.RuKu') }}</span>
           </el-button>
 
           <el-button
@@ -83,7 +83,7 @@
             class="-my-1 text-red-500"
             @click="handleDelete(scope.row)"
           >
-            <span class="text-sm"> 退货 </span>
+            <span class="text-sm"> {{ $t('i18nView.TuiHuo') }} </span>
           </el-button>
         </template>
       </el-table-column>

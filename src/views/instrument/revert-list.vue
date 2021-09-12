@@ -34,13 +34,13 @@
     >
       <!-- <el-table-column sortable type="selection" width="55" align="center" /> -->
       <!-- <el-table-column prop="id" type="index" :label="$t('i18nView.SerialNumber')" width="120" align="center" /> -->
-      <el-table-column prop="serialno" label="物品编号" align="center" show-overflow-tooltip />
+      <el-table-column prop="serialno" sortable label="物品编号" align="center" show-overflow-tooltip />
       <el-table-column prop="devicename" label="物品名称" align="center" show-overflow-tooltip />
       <el-table-column prop="subcategoryName" label="物品类别" align="center" show-overflow-tooltip />
       <el-table-column prop="model" label="型号" align="center" show-overflow-tooltip />
       <el-table-column prop="adminname" label="负责人姓名" align="center" show-overflow-tooltip />
       <el-table-column prop="attrnotes" label="物品描述" align="center" show-overflow-tooltip />
-      <el-table-column prop="supplytime" label="出库时间" align="center" show-overflow-tooltip />
+      <el-table-column prop="supplytime" sortable label="出库时间" align="center" show-overflow-tooltip />
       <!-- <el-table-column prop="text" :label="$t('i18nView.EquipmentName')" align="center" show-overflow-tooltip />
       <el-table-column prop="value" :label="$t('i18nView.EquipmentCode')" align="center" show-overflow-tooltip />
       <el-table-column prop="type" :label="$t('i18nView.EquipmentType')" align="center" show-overflow-tooltip />
@@ -62,7 +62,7 @@
             class="-my-1"
             @click="handleViewDetail(scope.row)"
           >
-            <span class="text-sm"> 详情 </span>
+            <span class="text-sm"> {{ $t('i18nView.See') }} </span>
           </el-button>
           <el-button
             :size="formSize"
@@ -82,11 +82,11 @@
       style="font-size: 0;	padding: 0.75rem;	text-align: center;"
     >
       <pagination
-        layout="prev, pager, next"
+        layout="total, sizes, prev, pager, next"
         :page.sync="page"
         :limit.sync="limit"
         :total="tableTotalCount"
-        @change="handleAppPageChange"
+        @pagination="getList"
       />
     </div>
 
@@ -209,8 +209,8 @@
             </el-col>
 
             <el-col :span="24">
-              <el-form-item prop="Sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
-                <el-input v-model.trim="form.Sbcserialno" placeholder="请输入" />
+              <el-form-item prop="sbcserialno" :label="$t('i18nView.SheBeiChuBianHao')">
+                <el-input v-model.trim="form.sbcserialno" placeholder="请输入" />
               </el-form-item>
             </el-col>
 

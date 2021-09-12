@@ -26,7 +26,7 @@ export default {
     UserRole: 'UserRole',
     RoleDefinition: 'RoleDefinition',
     InstrumentList: '仪器',
-    CompanyList: '公司',
+    CompanyList: 'Company',
     basicData: 'BasicData',
     Menus: 'Menus',
     dictiona: 'Dictiona',
